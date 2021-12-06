@@ -1,0 +1,213 @@
+swagger: "2.0"
+info:
+  description: "Gfuweb API Specification"
+  version: "1.0.0"
+  title: "GFU API"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "gfu@csi.it"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:10110"
+basePath: "/gfuweb/api/v1"
+tags:
+- name: "USC"
+  description: "Urbanistica Senza Carta"
+schemes:
+- "https"
+paths:
+  /percentuali:
+    get:
+      tags:
+      - "percentuali"
+      summary: "Reads all percentuali records from database"
+      description: ""
+      operationId: "readAllPercentuali"
+      parameters:
+        - in: query
+          name: isValid
+          required: false
+          type: boolean
+          enum: [true,false]
+          description: without filter -> all Percentuali |
+                       true -> only valid Percentuali |
+                       false -> only invalid Percentuali
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Percentuale"
+        "204":
+          description: No resource content
+        "400":
+          description: Bad request.Percentuale ID must be an integer and bigger than 0.
+          schema:
+             $ref: '#/definitions/Error'
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: A Percentuale with the specified ID was not found.
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+    post:
+      tags:
+      - "percentuali"
+      summary: "Create a new Percentuale"
+      description: ""
+      operationId: "createPercentuale"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Percentuale object that needs to be added to the db"
+        required: true
+        schema:
+          $ref: "#/definitions/Percentuale"
+      responses:
+        "200":
+          description: "Success"
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "405":
+          description: "Invalid input"
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+    put:
+      tags:
+      - "percentuali"
+      summary: "Update an existing Percentuale"
+      description: ""
+      operationId: "updatePercentuale"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Percentuale object that needs to be update"
+        required: true
+        schema:
+          $ref: "#/definitions/Percentuale"
+      responses:
+        "200":
+          description: "Success"
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "400":
+          description: "Invalid ID supplied"
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: "Legge not found"
+          schema:
+             $ref: '#/definitions/Error'
+        "405":
+          description: "Validation exception"
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+  /percentuali/{idPercentuale}:
+    get:
+      tags:
+      - "percentuali"
+      summary: "Find by Pk"
+      description: "Find Percentuali by Pk"
+      operationId: "readPercentualiByPk"
+      parameters:
+        - in: path
+          name: idPercentuale
+          required: true
+          type: number
+          description: find Percentuale by Pk
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+              $ref: "#/definitions/Percentuale"
+        "204":
+          description: No resource content
+        "400":
+          description: Bad request.Percentuale ID must be an integer and bigger than 0.
+          schema:
+             $ref: '#/definitions/Error'
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: A Percentuale with the specified ID was not found.
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+definitions:
+  Percentuale:
+    type: "object"
+    properties:
+      idPercentuale:
+        type: "integer"
+        format: "int64"
+      descrizione:
+        type: "string"
+      isValid:
+        type: "boolean"
+        default: null
+  Error:
+    type: "object"
+    properties:
+      codeMessage:
+        type: "number"    
+      userMessage:
+        type: "string"
+      internalMessage:
+        type: "string"

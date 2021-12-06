@@ -1,0 +1,8 @@
+{
+  "/gfuweb/api/*": {
+      "target": "http://localhost:10110",
+      "secure": false,
+      "logLevel": "debug",
+      "changeOrigin": true
+  }
+}

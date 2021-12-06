@@ -1,0 +1,8 @@
+{
+   "/gfuwebauthless/api/*": {
+      "target": "https://<@tstHostNameAuthless@>",
+      "secure": false,
+      "logLevel": "debug",
+      "changeOrigin": true
+  }
+}

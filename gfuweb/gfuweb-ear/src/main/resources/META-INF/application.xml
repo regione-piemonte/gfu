@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright CSI-Piemonte -2021
+  SPDX-License-Identifier: EUPL-1.2-or-later.
+-->
+<application xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:application="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/application_1_4.xsd http://xmlns.jcp.org/xml/ns/javaee http://java.sun.com/xml/ns/javaee/application_5.xsd" version="1.4">
+  <display-name>gfuweb</display-name>
+  <module>
+    <web>
+      <web-uri>gfuweb-web.war</web-uri>
+      <context-root>gfuweb</context-root>
+    </web>
+  </module>
+  <library-directory>lib</library-directory>
+</application>

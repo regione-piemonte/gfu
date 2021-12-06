@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright CSI-Piemonte -2021
+  SPDX-License-Identifier: EUPL-1.2-or-later.
+-->
+<jboss-deployment-structure xmlns="urn:jboss:deployment-structure:1.2">
+  <deployment>
+	<exclusions>
+	<!--The target JBoss AS 6.4.5 is shipped with the SPRING 3.1.1.RELEASE, but the project need a more recent one(e.g. 4.1.2.RELEASE) for using the annotations. -->
+	<module name="org.springframework.spring"/>
+	</exclusions>
+  </deployment>
+</jboss-deployment-structure>

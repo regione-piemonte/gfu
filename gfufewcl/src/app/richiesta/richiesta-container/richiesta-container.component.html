@@ -1,0 +1,85 @@
+<!--
+	Copyright CSI-Piemonte - 2021
+
+	SPDX-License-Identifier: EUPL-1.2-or-later.
+ -->
+<div class="container">
+  <div class="row tab-container">
+    <button class="btn btn-link tab-button" [ngClass]="{ 'tab-active': selectedTab === 'R' }" (click)="changeTab('R')">
+      RICHIESTA
+    </button>
+    <button class="btn btn-link tab-button" [disabled]="!enableProvvTab" [ngClass]="{ 'tab-active': selectedTab === 'P' }" (click)="changeTab('P')">
+      PROVVEDIMENTI
+    </button>
+    <button class="btn btn-link tab-button" [disabled]="!enableFinanzTab" [ngClass]="{ 'tab-active': selectedTab === 'F' }" (click)="changeTab('F')">
+      FINANZIAMENTI
+    </button>
+  </div>
+  <div class="section-title">
+    DATI GENERALI
+  </div>
+  <form [formGroup]="generalDataForm">
+
+
+    <div class="row">
+
+      <div class="form-group col-md-4">
+        <label for="richiestaProtocollo" *ngIf="selectedTab === 'R'">Protocollo*</label>
+        <label for="richiestaProtocollo" *ngIf="selectedTab !== 'R'">Protocollo</label>
+        <input type="text" class="form-control" id="richiestaProtocollo" formControlName="numProtocollo"/>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="richiestaData" *ngIf="selectedTab === 'R'">Data*</label>
+        <label for="richiestaData" *ngIf="selectedTab !== 'R'">Data</label>
+        <input type="date" class="form-control" id="richiestaData" formControlName="dataRichiesta"/>
+      </div>
+      <div class="form-group col-md-4" *ngIf="selectedTab !== 'R'">
+        <label for="richiedente">Richiedente</label>
+        <input type="text" class="form-control" id="richiedente" formControlName="richiedente"/>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-md-8">
+        <label for="richiestaNote">Note</label>
+        <input type="text" class="form-control" id="richiestaNote" formControlName="note"/>
+      </div>
+      <div class="form-group col-md-2">
+        <button class="btn btn-primary mt-4" (click)="salvaDatiGenerali()" [disabled]="this.codProfilo === 'GUEST' || selectedTab !== 'R'">
+          Salva
+        </button>
+
+      </div>
+    </div>
+  </form>
+
+  <app-richiedenti
+    *ngIf="enableRichiedentiTab"
+    [hidden]="selectedTab !== 'R'"
+    [richiesta]="richiesta"
+    [codProfilo]="codProfilo"
+    (richiedentiOut)="setRichiedenti($event)">
+  </app-richiedenti>
+
+  <app-provvedimenti #appProvvedimenti
+    *ngIf="richiedentiList"
+    [hidden]="selectedTab !== 'P'"
+    [idRichiesta]="richiesta.idRichiesta"
+    [richiedenti]="richiedentiList"
+    [codProfilo]="codProfilo"
+    (provvedimentiOut)="onProvvedimentiSaved($event)">
+  </app-provvedimenti>
+
+  <app-finanziamenti
+    *ngIf="enableFinanzTab"
+    [hidden]="selectedTab !== 'F'"
+    [idRichiesta]="richiesta.idRichiesta"
+    [richiedenti]="richiedentiList"
+    [provvedimenti]="provvedimentiList"
+    [tipiErogazione]="tipiErogazione"
+    [codProfilo]="codProfilo"
+    [pareri]="pareri"
+    [percentuali]="percentuali"
+    [rendiconti]="rendiconti">
+  </app-finanziamenti>
+
+</div>

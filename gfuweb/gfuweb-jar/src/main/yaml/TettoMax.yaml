@@ -1,0 +1,294 @@
+swagger: "2.0"
+info:
+  description: "Gfuweb API Specification"
+  version: "1.0.0"
+  title: "GFU API"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "gfu@csi.it"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:10110"
+basePath: "/gfuweb/api/v1"
+tags:
+- name: "USC"
+  description: "Urbanistica Senza Carta"
+schemes:
+- "https"
+paths:
+  /tettomax:
+    get:
+      tags:
+      - "TettoMax"
+      summary: "Reads all TettoMax records from database"
+      description: ""
+      operationId: "readAllTettoMax"
+      parameters:
+        - in: query
+          name: isValid
+          required: false
+          type: boolean
+          enum: [true,false]
+          description: without filter -> all TettoMax |
+                       true -> only valid TettoMax -> dataFineValidità is null |
+                       false -> only invalid -> dataFineValidità is not null
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/TettoMax"
+        "204":
+          description: No resource content
+        "400":
+          description: Bad request. TettoMax ID must be an integer and bigger than 0.
+          schema:
+             $ref: '#/definitions/Error'
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: A TettoMax with the specified ID was not found.
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+    post:
+      tags:
+      - "TettoMax"
+      summary: "Create a new TettoMax"
+      description: ""
+      operationId: "createTettoMax"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "TettoMax object that needs to be added to the db"
+        required: true
+        schema:
+          $ref: "#/definitions/TettoMax"
+      responses:
+        "405":
+          description: "Invalid input"
+    put:
+      tags:
+      - "TettoMax"
+      summary: "Update an existing TettoMax"
+      description: ""
+      operationId: "updateTettoMax"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "TettoMax object that needs to be update"
+        required: true
+        schema:
+          $ref: "#/definitions/TettoMax"
+      responses:
+        "200":
+          description: "Success"
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "400":
+          description: "Invalid ID supplied"
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: "Legge not found"
+          schema:
+             $ref: '#/definitions/Error'
+        "405":
+          description: "Validation exception"
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+  /tettomax/{idTettoMax}:
+    get:
+      tags:
+      - "TettoMax"
+      summary: "Find by Pk"
+      description: "Find tettoMax by Pk"
+      operationId: "readTettoMaxByPk"
+      parameters:
+        - in: path
+          name: idTettoMax
+          required: true
+          type: number
+          description: find TettoMax by Pk
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+              $ref: "#/definitions/TettoMax"
+        "204":
+          description: No resource content
+        "400":
+          description: Bad request. TettoMax ID must be an integer and bigger than 0.
+          schema:
+             $ref: '#/definitions/Error'
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: A tettoMax with the specified ID was not found.
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+    delete:
+      tags:
+      - "TettoMax"
+      summary: "Logic Delete by Pk"
+      description: "Logic Del tettoMax by Pk"
+      operationId: "deleteTettoMaxByPk"
+      parameters:
+        - in: path
+          name: idTettoMax
+          required: true
+          type: number
+          description: lofic del TettoMax by Pk
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+              $ref: "#/definitions/TettoMax"
+        "204":
+          description: No resource content
+        "400":
+          description: Bad request. TettoMax ID must be an integer and bigger than 0.
+          schema:
+             $ref: '#/definitions/Error'
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: A tettoMax with the specified ID was not found.
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+  /richieste/{idRichiesta}/richiedenti/tettomax/:
+    get:
+      tags:
+      - "TettoMax to richiedenti richiesta"
+      summary: "Find (Tettomax * Richiendenti)"
+      description: "Find (TettoMax * Richiedenti)"
+      operationId: "readTettoMaxToRichiedenti"
+      parameters:
+        - in: path
+          name: idRichiesta
+          required: true
+          type: number
+          description: find TettoMax to Richiedenti
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+              $ref: "#/definitions/TettoMaxTotRichiedenti"
+        "204":
+          description: No resource content
+        "400":
+          description: Bad request. TettoMax ID must be an integer and bigger than 0.
+          schema:
+             $ref: '#/definitions/Error'
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: A tettoMax with the specified ID was not found.
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+definitions:
+  TettoMax:
+    type: "object"
+    properties:
+      idTettoMax:
+        type: "integer"
+        format: "int64"
+      importo:
+        type: "string"
+      valuta:
+        type: "string"
+      dataInizio:
+        type: "string"
+      dataFine:
+        type: "string"
+  TettoMaxTotRichiedenti:
+    type: "object"
+    properties:
+      idTettoMax:
+        type: "integer"
+      importoTettoMax:
+        type: "integer"
+      importoTettoMaxTotRichiedenti:
+        type: "integer"
+  Error:
+    type: "object"
+    properties:
+      codeMessage:
+        type: "number"    
+      userMessage:
+        type: "string"
+      internalMessage:
+        type: "string"

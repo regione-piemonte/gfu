@@ -1,0 +1,302 @@
+swagger: "2.0"
+info:
+  description: "Gfuweb API Specification"
+  version: "1.0.0"
+  title: "GFU API"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "gfu@csi.it"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:10110"
+basePath: "/gfuweb/api/v1"
+tags:
+- name: "USC"
+  description: "Urbanistica Senza Carta"
+schemes:
+- "https"
+paths:
+  /comuni:
+    get:
+      tags:
+      - "comuni"
+      summary: "Reads all comuni records from database"
+      description: ""
+      operationId: "readAllcomuni"
+      parameters:
+        - in: query
+          name: descComune
+          required: false
+          type: string
+        - in: query
+          name: isValid
+          required: false
+          type: boolean
+          enum: [true,false]
+          description: without filter -> all comuni |
+                       true -> only valid comuni |
+                       false -> only invalid comuni  
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Comune"
+        "204":
+          description: No resource content
+        "400":
+          description: Bad request.comune ID must be an integer and bigger than 0.
+          schema:
+             $ref: '#/definitions/Error'
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: A comune with the specified ID was not found.
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+  /comuni/{codIstat}:
+    get:
+      tags:
+      - "comuni"
+      summary: "Find by Pk"
+      description: "Find Comune by Pk"
+      operationId: "readComuneByPk"
+      parameters:
+        - in: path
+          name: codIstat
+          required: true
+          type: number
+          description: find comune by Pk
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+              $ref: "#/definitions/Comune"
+        "204":
+          description: No resource content
+        "400":
+          description: Bad request. Comune ID must be an integer and bigger than 0.
+          schema:
+             $ref: '#/definitions/Error'
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: A Comune with the specified ID was not found.
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+  /associazioni:
+    get:
+      tags:
+      - "associazioni"
+      summary: "Reads all associazioni records from database"
+      description: ""
+      operationId: "readAllassociazioni"
+      parameters:
+        - in: query
+          name: descAssociazione
+          required: false
+          type: string
+        - in: query
+          name: tipoFormaAss
+          required: false
+          type: string
+          enum: ["CM","CONS", "CONV", "UCGFU", "UCDP"]
+          description: without filter -> all associazioni |
+                       CM -> Comunità Montane |
+                       CONS -> Consorzi |
+                       CONV -> Convenzione |
+                       UCGFU -> Unione dei Comuni (Catalogo Gfu)
+                       UCDP -> Unione dei Comuni (Catalogo Piemonte)
+        - in: query
+          name: isValid
+          required: false
+          type: boolean
+          enum: [true,false]
+          description: without filter -> all associazioni |
+                       true -> only valid associazioni |
+                       false -> only invalid associazioni
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Associazione"
+        "204":
+          description: No resource content
+        "400":
+          description: Bad request.associazione ID must be an integer and bigger than 0.
+          schema:
+             $ref: '#/definitions/Error'
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: A associazione with the specified ID was not found.
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+    post:
+      tags:
+      - "associazioni"
+      summary: "Create a new associazione"
+      description: ""
+      operationId: "createassociazione"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "associazione object that needs to be added to the db"
+        required: true
+        schema:
+          $ref: "#/definitions/Associazione"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+             $ref: "#/definitions/Associazione"
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "405":
+          description: "Invalid input"
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+  /associazioni/{idAssociazione}:
+    get:
+      tags:
+      - "associazioni"
+      summary: "Find by Pk"
+      description: "Find Associazione by Pk"
+      operationId: "readAssociazioneByPk"
+      parameters:
+        - in: path
+          name: idAssociazione
+          required: true
+          type: number
+          description: find associazione by Pk
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+              $ref: "#/definitions/Associazione"
+        "204":
+          description: No resource content
+        "400":
+          description: Bad request.associazione ID must be an integer and bigger than 0.
+          schema:
+             $ref: '#/definitions/Error'
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: A associazione with the specified ID was not found.
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+definitions:
+  Comune:
+    type: "object"
+    properties:
+      istatComune:
+        type: "string"
+      descComune:
+        type: "string"
+      descProvincia:
+        type: "string"
+      siglaProvincia:
+        type: "string"
+      numeroAbitanti:
+        type: "integer"
+  Associazione:
+     type: "object"
+     properties:
+       idAssociazione:
+        type: "integer"
+       istatAssociazione: 
+        type: "string"
+       descAssociazione:
+        type: "string"
+       codTipoFormaAssociativa:
+        type: "string"
+       descTiposFormaAssociativa:
+        type: "string"
+       comuni:
+        type: "array"
+        items:
+          $ref: '#/definitions/Comune'
+  Error:
+    type: "object"
+    properties:
+      code:
+        type: "number"    
+      message:
+        type: "string"

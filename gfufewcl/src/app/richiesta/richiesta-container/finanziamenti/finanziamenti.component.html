@@ -1,0 +1,449 @@
+<!--
+	Copyright CSI-Piemonte - 2021
+
+	SPDX-License-Identifier: EUPL-1.2-or-later.
+ -->
+<div class="section-title">
+  RIEPILOGO PROVVEDIMENTI ASSOCIATI ALLA RICHIESTA
+</div>
+
+<div class="row table-container">
+  <div class="col">
+    <div class="scrollbar-table scrollbar-primary">
+      <ng2-smart-table
+        [settings]="provvedimentiTableSettings"
+        [source]="provvedimentiTableSource"
+        (userRowSelect)="selectProvvedimento($event.selected)">
+      </ng2-smart-table>
+    </div>
+  </div>
+</div>
+
+<ng-container *ngIf="selectedFin">
+  <div class="row">
+    <div class="col">
+      <div class="nav-tabs">
+        <button class="btn tab-button-link" [ngClass]="{ 'tab-active': selectedTab === 'finanziamento' }" (click)="changeTab('finanziamento')">
+          FINANZIAMENTO
+        </button>
+        <button class="btn tab-button-link" [ngClass]="{ 'tab-active': selectedTab === 'erogazioni' }" (click)="changeTab('erogazioni')" [disabled]="!selectedFin.idFinanziamento">
+          EROGAZIONI
+        </button>
+        <button class="btn tab-button-link" [ngClass]="{ 'tab-active': selectedTab === 'praurb' }" (click)="changeTab('praurb')" [disabled]="!selectedFin.idFinanziamento">
+          PRATICA URBANISTICA
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <form [formGroup]="finanziamentoForm" [hidden]="selectedTab !== 'finanziamento'">
+    <div class="row">
+      <div class="form-group col-md-3">
+        <label for="statoProvv">Stato Finanziamento</label>
+        <input type="text" class="form-control" id="statoFin" formControlName="stato">
+      </div>
+      <div class="form-group col-md-9">
+        <label for="note">Note Finanziamento</label>
+        <input type="text" class="form-control" id="note" formControlName="note">
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="form-group col-md-4">
+        <label for="impFin">Importo finanziabile {{ selectedFin.valuta.toUpperCase() === 'EURO' ? '(€)' : '(Lire)' }}</label>
+        <input type="text" class="form-control" id="impFin" (keydown)="importoChangeEvent($event)" formControlName="impFinanziabile">
+      </div>
+
+      <div class="form-group col-md-4">
+        <label for="percFin">Percentuale (%)</label>
+        <select class="form-control" id="percFin" formControlName="percentuale" [compareWith]="comparePercentuali">
+          <option *ngFor="let perc of percentuali" [ngValue]="perc"> {{ perc.valorePercentuale }} </option>
+        </select>
+      </div>
+    </div>
+
+
+
+
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="radio-box row" [ngClass]="{'pressed': toggleRadioBtn , 'un-pressed': !toggleRadioBtn}">
+
+          <div class="form-group col-md-12 box-title">
+            <input type="radio" value="percentuale" name="tipoImporto" formControlName="tipoImporto" id="importo-ammesso"  (click)="callToggle()">
+            <label for="importo-ammesso">Importo ammesso</label>
+          </div>
+
+
+          <div class="form-group col-md-4">
+            <label for="impAmm">Importo ammesso {{ selectedFin.valuta.toUpperCase() === 'EURO' ? '(€)' : '(Lire)' }}</label>
+            <input type="text" class="form-control" id="impAmm" formControlName="impAmmesso">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="radio-box row" [ngClass]="{'pressedtm': !toggleRadioBtn , 'un-pressedtm': toggleRadioBtn}">
+          <div class="form-group col-md-12 box-title">
+            <input type="radio" value="tettomax" name="tipoImporto" formControlName="tipoImporto" (click)="callToggle()">
+            <label for="importo-ammesso">Importo tetto massimo</label>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="impMaxC">Importo max per comune {{ selectedFin.valuta.toUpperCase() === 'EURO' ? '(€)' : '(Lire)' }}</label>
+            <input type="text" class="form-control" id="impMaxC" formControlName="importoMaxComune">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="impMaxTot">Importo max totale {{ selectedFin.valuta.toUpperCase() === 'EURO' ? '(€)' : '(Lire)' }}</label>
+            <input type="text" class="form-control" id="impMaxTot" formControlName="importoMaxTotale">
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="form-group col-md-3">
+        <label for="parere">Parere</label>
+        <select class="form-control" id="parere" formControlName="parere" [compareWith]="comparePareri">
+          <option *ngFor="let parere of pareri" [ngValue]="parere"> {{ parere.descrizione }} </option>
+        </select>
+      </div>
+      <!-- <div class="form-group col-md-5">
+        <label for="attoApp">ATTO DI APPROVAZIONE</label>
+        <input type="text" class="form-control" id="attoApp" formControlName="attoApprovazione">
+      </div> -->
+      <div class="form-group col-md-3">
+        <label for="rendiconto">Rendiconto</label>
+        <select class="form-control" id="rendiconto" formControlName="rendiconto" [compareWith]="compareRendiconti">
+          <option *ngFor="let rend of rendiconti" [ngValue]="rend"> {{ rend.descrizione }} </option>
+        </select>
+      </div>
+      <div class="form-group col-md-3">
+        <label for="impRinuncia">Importo rinuncia {{ selectedFin.valuta.toUpperCase() === 'EURO' ? '(€)' : '(Lire)' }}</label>
+        <input type="text" class="form-control" id="impRinuncia" (keydown)="importoChangeEvent($event)" formControlName="importoRinuncia">
+      </div>
+      <div class="form-group col-md-3">
+        <label for="attoRinuncia">Atto di rinuncia</label>
+        <input type="text" class="form-control" id="attoRinuncia" formControlName="attoRinuncia">
+      </div>
+    </div>
+
+    <!-- <div class="row">
+      <div class="form-group col-md-3">
+        <label for="impRinuncia">Importo rinuncia {{ selectedFin.valuta.toUpperCase() === 'EURO' ? '(€)' : '(Lire)' }}</label>
+        <input type="text" class="form-control" id="impRinuncia" (keydown)="importoChangeEvent($event)" formControlName="importoRinuncia">
+      </div>
+      <div class="form-group col-md-5">
+        <label for="attoRinuncia">Atto di rinuncia</label>
+        <input type="text" class="form-control" id="attoRinuncia" formControlName="attoRinuncia">
+      </div>
+    </div> -->
+
+    <div class="row">
+      <div class="col-12 btn-nav">
+
+        <button class="btn btn-primary" (click)="onChangeStatoFinanziamento(2)" [disabled]="!enableSospendi">Sospendi</button>
+        <button class="btn btn-primary" (click)="onChangeStatoFinanziamento(7)" [disabled]="!enableRifiuta">Rifiuta</button>
+        <button class="btn btn-primary" (click)="onChangeStatoFinanziamento(8)" [disabled]="!enableRevoca">Revoca</button>
+        <button class="btn btn-primary" (click)="onChangeStatoFinanziamento(9)" [disabled]="!enableAnnulla">Annulla rinuncia</button>
+        <button class="btn btn-primary" (click)="cambiaStato(0)" [disabled]="!enableRipristina">Ripristina finanziamento</button>
+        <button class="btn btn-primary" (click)="onValida()" [disabled]="!enableValida">Valida</button>
+      </div>
+    </div>
+
+    <div class="row mt-5 mb-5">
+      <div class="col">
+        <button class="btn btn-primary" (click)="onSalva()" [disabled]="!selectedFin || codProfilo === 'GUEST'">Salva</button>
+      </div>
+    </div>
+  </form>
+
+  <form [formGroup]="erogazioniForm" [hidden]="selectedTab !== 'erogazioni'">
+    <div class="row row-erogazioni">
+      <div class="form-group col-md-2">
+        <label for="acconto">Acconto {{ selectedFin.valuta.toUpperCase() === 'EURO' ? '(€)' : '(Lire)' }}</label>
+        <input type="text" class="form-control" id="acconto" formControlName="impAcconto">
+      </div>
+      <div class="form-group col-md-2">
+        <button class="btn btn-primary" (click)="onChangeStatoFinanziamento(3)" [disabled]="!enableAttivaAcconto">Attiva acconto</button>
+      </div>
+      <div class="form-group col-md-2">
+        <label for="detAcc">Num. determina acconto</label>
+        <input type="text" class="form-control" id="detAcc" formControlName="numDetAcconto">
+      </div>
+      <div class="form-group col-md-2">
+        <label for="dateAcc">Data determina acconto</label>
+        <input type="date" class="form-control" id="dateAcc" formControlName="dataDetAcconto">
+      </div>
+      <div class="form-group form-btn col-md-4">
+        <button class="btn btn-primary" (click)="onCercaDeterminaAcconto()" [disabled]="!enableCercaDetAcconto">Cerca determina</button>
+        <button class="btn btn-primary" (click)="onConsultaAllegato('acconto')" [disabled]="!determinaUrlAcconto">Consulta allegato</button>
+      </div>
+    </div>
+
+    <div class="row row-erogazioni">
+      <div class="form-group col-md-2">
+        <label for="saldo">Saldo {{ selectedFin.valuta.toUpperCase() === 'EURO' ? '(€)' : '(Lire)' }}</label>
+        <input type="text" class="form-control" id="saldo" (keydown)="importoChangeEvent($event)" formControlName="impSaldo">
+      </div>
+      <div class="form-group col-md-2">
+        <button class="btn btn-primary" (click)="onChangeStatoFinanziamento(5)" [disabled]="!enableAttivaSaldo">Attiva saldo</button>
+      </div>
+      <div class="form-group col-md-2">
+        <label for="detSaldo">Num. determina saldo</label>
+        <input type="text" class="form-control" id="detSaldo" formControlName="numDetSaldo">
+      </div>
+      <div class="form-group col-md-2">
+        <label for="dateSaldo">Data determina saldo</label>
+        <input type="date" class="form-control" id="dateSaldo" formControlName="dataDetSaldo">
+      </div>
+      <div class="form-group form-btn col-md-4">
+        <button class="btn btn-primary" (click)="onCercaDeterminaSaldo()" [disabled]="!enableCercaDetSaldo">Cerca determina</button>
+        <button class="btn btn-primary" (click)="onConsultaAllegato('saldo')" [disabled]="!determinaUrlSaldo">Consulta allegato</button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col text-right">
+        <button class="btn btn-primary" (click)="updateErogazioni()"
+          [disabled]="codProfilo === 'GUEST'
+            || !selectedFin
+            || !selectedFin.idFinanziamento
+            || !enableUpdateErogazioni"
+        >
+          Salva
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <span [hidden]="selectedTab !== 'praurb'">
+    <ng-container *ngIf="selectedFin.praticaUrbGfu; else searchBox">
+      <div class="row">
+        <div class="form-group col-md-4">
+          <strong>Num. atto approv.</strong> {{ selectedFin.praticaUrbGfu.numAttoApprovazioneUrb }}
+        </div>
+        <div class="form-group col-md-4">
+          <strong>Data atto approv.</strong> {{ selectedFin.praticaUrbGfu.dataAttoApprovazioneUrb }}
+        </div>
+        <div class="form-group col-md-4">
+          <strong>Num. pratica urb.</strong> {{ selectedFin.praticaUrbGfu.numPraticaUrb }}
+        </div>
+      </div>
+
+      <p class="boxed-data-title">
+        <strong>DATI PRATICA URBANISTICA</strong>
+      </p>
+      <div class="scrollbar-table scrollbar-primary">
+
+          <table class="table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>
+                  Num. protocollo
+                </th>
+                <th>
+                  Data ingresso Regione
+                </th>
+                <th>
+                  COMUNE (PROV.)
+                </th>
+                <th>
+                  Tipo pratica
+                </th>
+                <th>
+                  Oggetto
+                </th>
+                <th>
+                  Stato pratica
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>
+                  {{ praUrbDetails?.numProtocollo }}
+                </td>
+                <td>
+                  {{ praUrbDetails?.dataIngressoRegione }}
+                </td>
+                <td>
+                  {{ praUrbDetails?.elencoComunePv }}
+                </td>
+                <td>
+                  {{ praUrbDetails?.descTipoPratica }}
+                </td>
+                <td>
+                  {{ praUrbDetails?.oggettoPratica }}
+                </td>
+                <td>
+                  {{ praUrbDetails?.descStatoPratica }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div><!--/boxed-data-->
+
+
+
+      <ng-container *ngIf="praUrbDetails?.provvedimentiUrb">
+        <p class="boxed-data-title">
+          <strong>PROVVEDIMENTI</strong>
+        </p>
+        <div class="scrollbar-table scrollbar-primary">
+          <table class="table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>
+                  Num. provvedimento
+                </th>
+                <th>
+                  Data provvedimento
+                </th>
+                <th>
+                  Tipo provvedimento
+                </th>
+                <th>
+                  Esito provvedimento
+                </th>
+                <th>
+                  Num. BUR
+                </th>
+                <th>
+                  Data BUR
+                </th>
+              </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let provv of praUrbDetails?.provvedimentiUrb">
+              <td>
+                {{ provv.numProvvedimento }}
+              </td>
+              <td>
+                {{ provv.dataProvvedimento }}
+              </td>
+              <td>
+                {{ provv.descTipoProvvedimento }}
+              </td>
+              <td>
+                {{ provv.esitoProvvedimento }}
+              </td>
+              <td>
+                {{ provv.numBUR }}
+              </td>
+              <td>
+                {{ provv.dataBUR }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="praUrbDetails?.conferenzeUrb">
+        <p class="boxed-data-title">
+          <strong>CONFERENZE</strong>
+        </p>
+        <div class="scrollbar-table scrollbar-primary">
+          <table class="table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>
+                  Tipo conferenza
+                </th>
+                <th>
+                  Tipo passo iter
+                </th>
+                <th>
+                  Data passo iter
+                </th>
+                <th>
+                  Protocollo passo iter
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let conf of praUrbDetails?.conferenzeUrb">
+                <td>
+                  {{ conf.descTipoConferenza }}
+                </td>
+                <td>
+                  {{ conf.descTipoPassoIter }}
+                </td>
+                <td>
+                  {{ conf.dataPassoIter }}
+                </td>
+                <td>
+                  {{ conf.numProtocolloPassoIter }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+      </div>
+      </ng-container>
+
+      <ng-container *ngIf="praUrbDetails?.adeguamentoUrb?.length > 0">
+        <p class="boxed-data-title">
+          <strong>ADEGUAMENTI: </strong> {{ buildAdeguamentiString(praUrbDetails?.adeguamentoUrb) }}
+        </p>
+      </ng-container>
+
+      <div class="row mt-5 mb-5">
+        <div class="col">
+          <button class="btn btn-primary" (click)="onEliminaPraUrb()" [disabled]="codProfilo === 'GUEST'">ELIMINA</button>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-template #searchBox>
+      <form [formGroup]="searchPraUrbForm">
+        <div class="row">
+          <div class="form-group col-md-4">
+            <label for="comune">Comune*</label>
+            <input type="text" class="form-control" id="comune" formControlName="comune"
+              [ngbTypeahead]="searchComune" [inputFormatter]="comuneFieldFormatter" [resultTemplate]="rt"/>
+            <small *ngIf="loading" class="form-text text-muted"><em>Loading...</em></small>
+            <ng-template #rt let-r="result" let-t="term">
+              <ngb-highlight [result]="r.descComune" [term]="t"></ngb-highlight>
+            </ng-template>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="dataFrom">Da data provvedimento urb. *</label>
+            <input type="date" class="form-control" id="dataFrom" formControlName="dataPraUrbDa"/>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="dataTo">A data provvedimento urb. *</label>
+            <input type="date" class="form-control" id="dataTo" formControlName="dataPraUrbA"/>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="centered-btn col">
+            <button class="btn btn-primary" [disabled]="codProfilo === 'GUEST'" (click)="searchPraUrb()">
+              Ricerca
+            </button>
+            <button class="btn btn-primary" [disabled]="codProfilo === 'GUEST'" (click)="clearPraUrbForm()">
+              Annulla
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <div class="row" *ngIf="searchPraUrbResult">
+        <div class="col">
+          <div class="scrollbar-table scrollbar-primary">
+            <ng2-smart-table
+              [settings]="praUrbTableSettings"
+              [source]="praUrbTableSource"
+              (edit)="aggiungiPraUrb($event)">
+            </ng2-smart-table>
+          </div>
+        </div>
+      </div>
+
+    </ng-template>
+  </span>
+</ng-container>

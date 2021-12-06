@@ -1,0 +1,21 @@
+<!--
+	Copyright CSI-Piemonte - 2021
+
+	SPDX-License-Identifier: EUPL-1.2-or-later.
+ -->
+<div class="container">
+  <h3>Pareri</h3>
+  <div class="row table-container">
+    <div class="col pareri">
+      <div class="scrollbar-table scrollbar-primary">
+        <ng2-smart-table
+          [settings]="pareriTableSettings"
+          [source]="pareriTableSource"
+          (createConfirm)="onCreateElement($event)"
+          (editConfirm)="onEditElement($event)"
+          (deleteConfirm)="onDeleteElement($event)">
+        </ng2-smart-table>
+      </div>
+    </div>
+  </div>
+</div>

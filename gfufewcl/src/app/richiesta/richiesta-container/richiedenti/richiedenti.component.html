@@ -1,0 +1,123 @@
+
+  <div class="section-title">
+    RICHIEDENTI
+  </div>
+
+  <div class="row mb-2">
+    <div class="col">
+    <button class="btn btn-outline-primary" [disabled]="!enableTabCS" [ngClass]="{ 'tab-active': selectedTab === 'CS' }"
+      (click)="changeTab('CS')">
+      Comune
+    </button>
+    <button class="btn btn-outline-primary" [disabled]="!enableTabAR" [ngClass]="{ 'tab-active': selectedTab === 'AR' }"
+      (click)="changeTab('AR')">
+      Forma associativa registrata
+    </button>
+    <button class="btn btn-outline-primary" [disabled]="!enableTabAN" [ngClass]="{ 'tab-active': selectedTab === 'AN' }"
+      (click)="changeTab('AN')">
+      Forma associativa da registrare
+    </button>
+    </div>
+  </div>
+
+  <ng-container *ngIf="selectedTab === 'AN'">
+    <div class="section-title">
+      NUOVA FORMA ASSOCIATIVA
+    </div>
+    <form [formGroup]="formaAssociativaForm">
+      <div class="row">
+        <div class="form-group col-md-4">
+          <label for="tipoAss">Tipo forma associativa*</label>
+          <select class="form-control" id="tipoAss" formControlName="tipo">
+            <option *ngFor="let tipo of tipiFormaAssociativa" [ngValue]="tipo">{{tipo.descrizione}}</option>
+          </select>
+        </div>
+        <div class="form-group col-md-8">
+          <label for="denomAss">Denominazione forma associativa*</label>
+          <input type="text" class="form-control" id="denomAss" formControlName="denom">
+        </div>
+      </div>
+    </form>
+  </ng-container>
+
+  <form [formGroup]="ricercaForm">
+
+    <div class="row">
+      <!-- <div class="form-group col-md-2" *ngIf="selectedTab === 'AN'">
+        <label for="tipo">TIPO Richiedente</label>
+        <select class="form-control" id="tipo" formControlName="tipo">
+          <option value="C">COMUNI</option>
+          <option value="U">ASSOCIAZIONE DI COMUNI</option>
+        </select>
+      </div> -->
+      <div class="form-group" [ngClass]="{ 'col-md-6': selectedTab === 'CS', 'col-md-4': selectedTab === 'AN' }"
+        *ngIf="selectedTab !== 'AR' ">
+        <label for="comune">Comune</label>
+        <input type="text" class="form-control" id="comune" formControlName="comune" [ngbTypeahead]="searchComune">
+        <small *ngIf="comuniLoading" class="form-text text-muted"><em>Loading...</em></small>
+      </div>
+      <div class="form-group col-md-2 form-btn" *ngIf="selectedTab !== 'AR' ">
+        <button class="btn btn-primary" (click)="onAggiungi()" [disabled]="comuniLoading || codProfilo === 'GUEST' || ricercaForm.disabled">
+          Aggiungi
+        </button>
+      </div>
+      <div class="form-group col-md-6" *ngIf="selectedTab !== 'CS' ">
+        <label for="associazione">Associazione</label>
+        <input type="text" class="form-control" id="associazione" formControlName="associazione" [ngbTypeahead]="searchAssociazione">
+        <small *ngIf="associazioniLoading" class="form-text text-muted"><em>Loading...</em></small>
+      </div>
+      <div class="form-group col-md-4" *ngIf="selectedTab === 'AR' ">
+        <label for="tipoAssRegistrata">Tipo forma associativa</label>
+        <input type="text" class="form-control" id="tipoAssRegistrata" formControlName="tipoAssRegistrata">
+      </div>
+    </div>
+
+    <div [ngClass]="{ 'fixed-height': selectedTab === 'AN' }" *ngIf="selectedTab !== 'CS' ">
+      <ng-container *ngIf="associazioneSelected && associazioneTableSource.count() > 0 && selectedTab !== 'CS'">
+        <div class="row justify-content-end">
+          <div [ngClass]="{ 'col table-height-50': selectedTab === 'AR', 'col-md-6 table-height-25': selectedTab === 'AN' }">
+            <strong>Elenco comuni dell'associazione</strong>
+            <div class="scrollbar-table scrollbar-primary">
+              <ng2-smart-table #associazioneTable
+                [settings]="associazioneTableSettings" [source]="associazioneTableSource"
+                (userRowSelect)="selectFromAssociazione($event.selected)">
+              </ng2-smart-table>
+            </div>
+          </div>
+        </div>
+
+        <div class="row justify-content-end">
+          <div class="text-right" [ngClass]="{ 'col': selectedTab === 'AR', 'col-md-6': selectedTab === 'AN' }">
+            <button class="btn btn-primary" (click)="onAggiungi(true)"
+              [disabled]="associazioniLoading || associazioneTableSource.count() < 1 || codProfilo === 'GUEST'">
+              Aggiungi
+            </button>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+
+  </form>
+
+
+  <div class="row table-container" *ngIf="comuniRichiedenti.length > 0">
+    <div class="col">
+      <strong>Elenco dei richiedenti</strong>
+      <div class="scrollbar-table scrollbar-primary">
+        <ng2-smart-table [settings]="richiedentiTableSettings" [source]="richiedentiTableSource"
+          (delete)="rimuoviRichiedente($event.data)">
+        </ng2-smart-table>
+      </div>
+    </div>
+  </div>
+
+  <ng-container *ngIf="selectedTab === 'AN'">
+    <div class="row">
+      <div class="col text-right">
+        <button class="btn btn-primary" (click)="salvaFormaAssociativa()" *ngIf="!(comuniRichiedenti.length < 2 || !enableSalvaFA)">
+          Salva
+        </button>
+      </div>
+    </div>
+  </ng-container>
+

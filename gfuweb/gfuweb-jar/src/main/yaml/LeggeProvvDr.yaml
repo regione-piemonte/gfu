@@ -1,0 +1,614 @@
+swagger: "2.0"
+info:
+  description: "Gfuweb API Specification"
+  version: "1.0.0"
+  title: "GFU API"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "gfu@csi.it"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:10110"
+basePath: "/gfuweb/api/v1"
+tags:
+- name: "USC"
+  description: "Urbanistica Senza Carta"
+schemes:
+- "https"
+paths:
+  /provvedimenti/{id}:
+    get:
+      tags:
+      - "provvedimenti"
+      summary: "Find by Pk"
+      description: "Find Provvedimento by Pk"
+      operationId: "readProvvedimentoByPk"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: number
+          description: find Provvedimento by Pk
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: "object"
+            items:
+              $ref: "#/definitions/Provvedimento"
+        "204":
+          description: No resource content
+        "400":
+          description: Bad request. Provvedimento ID must be an integer and bigger than 0.
+          schema:
+             $ref: '#/definitions/Error'
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: A Provvedimento with the specified ID was not found.
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+  /provvedimenti:
+    get:
+      tags:
+      - "provvedimenti"
+      summary: "Reads all Provvedimenti records from database"
+      description: ""
+      operationId: "readAllProvvedimenti"
+      parameters:
+        - in: query
+          name: isValid
+          required: false
+          type: boolean
+          enum: [true,false]
+          description: without filter -> all Provvedimenti |
+                       true -> only valid Provvedimenti |
+                       false -> only invalid Provvedimenti
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Provvedimento"
+        "204":
+          description: No resource content
+        "400":
+          description: Bad request. Provvedimento ID must be an integer and bigger than 0.
+          schema:
+             $ref: '#/definitions/Error'
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: A Provvedimento with the specified ID was not found.
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+    post:
+      tags:
+      - "provvedimenti"
+      summary: "Create a new Provvedimento"
+      description: "Create a new Provvedimento"
+      operationId: "createProvvedimento"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Provvedimento object that needs to be added to the db"
+        required: true
+        schema:
+          $ref: "#/definitions/Provvedimento"
+      responses:
+        "200":
+          description: "Success"
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "405":
+          description: "Invalid input"
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+    put:
+      tags:
+      - "provvedimenti"
+      summary: "Update an existing Provvedimento"
+      description: ""
+      operationId: "updateProvvedimento"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Provvedimento object that needs to be update"
+        required: true
+        schema:
+          $ref: "#/definitions/Provvedimento"
+      responses:
+        "200":
+          description: "Success"
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "400":
+          description: "Invalid ID supplied"
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: "Legge not found"
+          schema:
+             $ref: '#/definitions/Error'
+        "405":
+          description: "Validation exception"
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+  /dr/{id}:
+    get:
+      tags:
+      - "dr"
+      summary: "Find by Pk"
+      description: "Find dr by Pk"
+      operationId: "readDrByPk"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: number
+          description: find Dr by Pk
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: "object"
+            items:
+              $ref: "#/definitions/Dr"
+        "204":
+          description: No resource content
+        "400":
+          description: Bad request. Dr ID must be an integer and bigger than 0.
+          schema:
+             $ref: '#/definitions/Error'
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: A dr with the specified ID was not found.
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+  /dr:
+    get:
+      tags:
+      - "dr"
+      summary: "Reads all Dr records from database"
+      description: ""
+      operationId: "readAllDr"
+      parameters:
+        - in: query
+          name: isValid
+          required: false
+          type: boolean
+          enum: [true,false]
+          description: without filter -> all Dr |
+                       true -> only valid Dr |
+                       false -> only invalid Dr
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Dr"
+        "204":
+          description: No resource content
+        "400":
+          description: Bad request. Dr ID must be an integer and bigger than 0.
+          schema:
+             $ref: '#/definitions/Error'
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: A Dr with the specified ID was not found.
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+    post:
+      tags:
+      - "dr"
+      summary: "Create a new Dr"
+      description: "Create a new Dr"
+      operationId: "createDr"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Dr object that needs to be added to the db"
+        required: true
+        schema:
+          $ref: "#/definitions/Dr"
+      responses:
+        "200":
+          description: "Success"
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "405":
+          description: "Invalid input"
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+    put:
+      tags:
+      - "dr"
+      summary: "Update an existing Dr"
+      description: ""
+      operationId: "updateDr"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Dr object that needs to be update"
+        required: true
+        schema:
+          $ref: "#/definitions/Dr"
+      responses:
+        "200":
+          description: "Success"
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "400":
+          description: "Invalid ID supplied"
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: "Dr not found"
+          schema:
+             $ref: '#/definitions/Error'
+        "405":
+          description: "Validation exception"
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+  /leggi/provvedimenti/dr/{idLeggeProvvDr}:
+    get:
+      tags:
+      - "LeggeProvvDr"
+      summary: "Reads a LeggiProvvDr record from database"
+      description: ""
+      operationId: "readLeggeProvDrByPk"
+      parameters:
+        - in: path
+          name: idLeggeProvvDr
+          required: true
+          type: number
+          description: find LeggeProvvDr by Pk
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/LeggeProvvDr"
+        "204":
+          description: No resource content
+        "400":
+          description: Bad request. 
+          schema:
+             $ref: '#/definitions/Error'
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: A Dr with the specified ID was not found.
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+  /leggi/provvedimenti/dr:
+    get:
+      tags:
+      - "LeggeProvvDr"
+      summary: "Reads all LeggiProvvDr records from database"
+      description: ""
+      operationId: "readAllLeggeProvDr"
+      parameters:
+        - in: query
+          name: descLeggiProvvDr
+          required: false
+          type: string
+        - in: query
+          name: isValid
+          required: false
+          type: boolean
+          enum: [true,false]
+          description: without filter -> all Dr |
+                       true -> only valid Dr |
+                       false -> only invalid Dr
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/LeggeProvvDr"
+        "204":
+          description: No resource content
+        "400":
+          description: Bad request. 
+          schema:
+             $ref: '#/definitions/Error'
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: A Dr with the specified ID was not found.
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+    post:
+      tags:
+      - "LeggeProvvDr"
+      summary: "Create a new LeggeProvvDr"
+      description: "Create a new LeggeProvvDr"
+      operationId: "createLeggeProvvDr"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "LeggeProvvDr object that needs to be added to the db"
+        required: true
+        schema:
+          $ref: "#/definitions/LeggeProvvDr"
+      responses:
+        "200":
+          description: "Success"
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "405":
+          description: "Invalid input"
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+    put:
+      tags:
+      - "LeggeProvvDr"
+      summary: "Update an existing LeggeProvvDr"
+      description: ""
+      operationId: "updateLeggeProvvDr"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Dr object that needs to be update"
+        required: true
+        schema:
+          $ref: "#/definitions/LeggeProvvDr"
+      responses:
+        "200":
+          description: "Success"
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "400":
+          description: "Invalid ID supplied"
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: "Dr not found"
+          schema:
+             $ref: '#/definitions/Error'
+        "405":
+          description: "Validation exception"
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+definitions:
+  Dr:
+    type: "object"
+    properties:
+      idDr: 
+        type: "integer"
+        format: "int64"
+      descDr: 
+        type: "string"
+      idTipoDr: 
+        type: "integer"
+      descTipoDr: 
+        type: "string"
+      numeroDr: 
+        type: "string"
+      dataDr: 
+        type: string
+      isValid:
+        type: "boolean"
+        default: null
+  Provvedimento:
+    type: "object"
+    properties:
+      idProvvedimento:
+        type: "integer"
+        format: "int64"
+      descProvvedimento:
+        type: "string"
+      isValid:
+        type: "boolean"
+        default: null
+  LeggeProvvDr:
+    type: "object"
+    properties:
+      idLeggeProvvDr:
+        type: "integer"
+        format: "int64"
+      descLeggeProvvDr:
+        type: "string"
+      idLegge:
+        type: "integer"
+      descLegge:
+        type: "string"
+      idProvvedimento:
+        type: "integer"
+      descProvvedimento:
+        type: "string"
+      idDr: 
+        type: "integer"
+      descDr:
+        type: "string"
+      idVincoloPopolazione:
+        type: "integer"
+      descVincoloPopolazione:
+        type: "string"
+      isValid:
+        type: "boolean"
+        default: null
+    
+  Error:
+    type: "object"
+    properties:
+      code:
+        type: "number"    
+      message:
+        type: "string"

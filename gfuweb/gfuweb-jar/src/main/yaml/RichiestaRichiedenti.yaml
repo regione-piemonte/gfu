@@ -1,0 +1,949 @@
+swagger: "2.0"
+info:
+  description: "Gfuweb API Specification"
+  version: "1.0.0"
+  title: "GFU API"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "gfu@csi.it"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:10110"
+basePath: "/gfuweb/api/"
+tags:
+- name: "USC"
+  description: "Urbanistica Senza Carta"
+schemes:
+- "https"
+paths:
+  /richieste:
+    get:
+      tags:
+      - "Richieste"
+      summary: "Reads richiesta from database"
+      description: ""
+      operationId: "readAllRichieste"
+      parameters:
+        - in: query
+          name: isValid
+          required: false
+          type: boolean
+          description: find all Richieste
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Richiesta"
+        "204":
+          description: No resource content
+        "400":
+          description: Bad request. Richiesta ID must be an integer and bigger than 0.
+          schema:
+             $ref: '#/definitions/Error'
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: A Richiesta with the specified ID was not found.
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+    post:
+      tags:
+      - "Richieste"
+      summary: "Create a new Richiesta"
+      description: ""
+      operationId: "createRichiesta"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Richiesta object that needs to be added to the db"
+          required: true
+          schema:
+           $ref: "#/definitions/Richiesta"
+      responses:
+        "200":
+          description: "Success"
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "405":
+          description: "Invalid input"
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+    
+  /richieste/{idRichiesta}:
+    get:
+      tags:
+      - "Richieste"
+      summary: "Reads richiesta to PK from database"
+      description: ""
+      operationId: "readRichiestaByPk"
+      parameters:
+        - in: path
+          name: idRichiesta
+          required: true
+          type: number
+          description: find Richiesta by Pk
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+              $ref: "#/definitions/Richiesta"
+        "204":
+          description: No resource content
+        "400":
+          description: Bad request. Richiesta ID must be an integer and bigger than 0.
+          schema:
+             $ref: '#/definitions/Error'
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: A Richiesta with the specified ID was not found.
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+    put:
+      tags:
+      - "Richieste"
+      summary: "Update an existing Richiesta"
+      description: ""
+      operationId: "updateRichiesta"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - in: path
+          name: idRichiesta
+          required: true
+          type: number
+          description: find Richieste to Richiesta
+        - in: "body"
+          name: "body"
+          description: "Richiesta object that needs to be update"
+          required: true
+          schema:
+            $ref: "#/definitions/Richiesta"
+      responses:
+        "200":
+          description: "Success"
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "400":
+          description: "Invalid ID supplied"
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: "Richiesta not found"
+          schema:
+             $ref: '#/definitions/Error'
+        "405":
+          description: "Validation exception"
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+    delete:
+      tags:
+      - "Richieste"
+      summary: "Delete an existing Richiesta"
+      description: ""
+      operationId: "deleteRichiesta"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - in: path
+          name: idRichiesta
+          required: true
+          type: number
+          description:  Richiesta
+      responses:
+        "200":
+          description: "Success"
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "400":
+          description: "Invalid ID supplied"
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: "Richiesta not found"
+          schema:
+             $ref: '#/definitions/Error'
+        "405":
+          description: "Validation exception"
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+  /richieste/{idRichiesta}/richiedenti:
+    get:
+      tags:
+      - "Richiesta | Richiedenti"
+      summary: "Reads all richiedenti records To idRichiesta "
+      description: ""
+      operationId: "readAllRichiedenti"
+      parameters:
+        - in: path
+          name: idRichiesta
+          required: true
+          type: number
+          description: find Richiedenti to Richiesta
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Richiedente"
+        "204":
+          description: No resource content
+        "400":
+          description: Bad request. Richiedente ID must be an integer and bigger than 0.
+          schema:
+             $ref: '#/definitions/Error'
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: A Richiedente with the specified ID was not found.
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+    post:
+      tags:
+      - "Richiesta | Richiedenti"
+      summary: "Create Richiedenti To idRichiesta"
+      description: ""
+      operationId: "createRichiedente"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - in: path
+          name: idRichiesta
+          required: true
+          type: number
+          description: find Richiedenti to Richiesta
+        - in: "body"
+          name: "body"
+          description: "Richiedente object that needs to be added to the db"
+          required: true
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Richiedente"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Richiedente"
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "405":
+          description: "Invalid input"
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+  /richiedenti/{idRichiedente}:
+    get:
+      tags:
+      - "Richiedenti"
+      summary: "Find by Pk"
+      description: "Find Richiedente by Pk"
+      operationId: "readRichiedenteByPk"
+      parameters:
+        - in: path
+          name: idRichiedente
+          required: true
+          type: number
+          description: find Richiedente by Pk
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+              $ref: "#/definitions/Richiedente"
+        "204":
+          description: No resource content
+        "400":
+          description: Bad request. Richiedente ID must be an integer and bigger than 0.
+          schema:
+             $ref: '#/definitions/Error'
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: A Richiedente with the specified ID was not found.
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+  /richieste/{idRichiesta}/richiedenti/{idRichiedente}:
+    delete:
+      tags:
+      - "Richiesta | Richiedenti"
+      summary: "Delete an existing Richiedente"
+      description: ""
+      operationId: "deleteRichiedente"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - in: path
+          name: idRichiesta
+          required: true
+          type: number
+          description:  Richiesta
+        - in: path
+          name: idRichiedente
+          required: true
+          type: number
+          description: detele Richiedente to Richiesta
+      responses:
+        "200":
+          description: "Success"
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "400":
+          description: "Invalid ID supplied"
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: "Richiedente not found"
+          schema:
+             $ref: '#/definitions/Error'
+        "405":
+          description: "Validation exception"
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+  /richieste/{idRichiesta}/{idAssociazione}:
+    put:
+      tags:
+      - "Richieste"
+      summary: "Update Richiesta to Forma Associativa"
+      description: ""
+      operationId: "updateRichiestaToFormaAssociativa"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - in: path
+          name: idRichiesta
+          required: true
+          type: number
+          description: update Richiesta to FormaAssociativa
+        - in: path
+          name: idAssociazione
+          description: "Richiedente object that needs to be added to the db"
+          required: true
+          type: number
+      responses:
+        "200":
+          description: "Success"
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "405":
+          description: "Invalid input"
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+  /richieste/{idRichiesta}/provvedimenti:
+    get:
+      tags:
+      - "Richiesta | Provvedimenti"
+      summary: "Reads all Provvedimenti  To idRichiesta "
+      description: ""
+      operationId: "readAllProvvedimentiToRichiesta"
+      parameters:
+        - in: path
+          name: idRichiesta
+          required: true
+          type: number
+          description: find Richiedenti to Richiesta
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/LeggeProvvDr"
+        "204":
+          description: No resource content
+        "400":
+          description: Bad request. Richiedente ID must be an integer and bigger than 0.
+          schema:
+             $ref: '#/definitions/Error'
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: A Richiedente with the specified ID was not found.
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+  /richieste/{idRichiesta}/richiedenti/provvedimenti/{idLeggeProvvDr}:
+    delete:
+      tags:
+      - "Richiesta  | Richiedenti | Provvedimenti"
+      summary: "Delete ProvvToRichiedenti to idRichiesta"
+      description: ""
+      operationId: "deleteProvvToRichiedentiToRichiesta"
+      produces:
+      - "application/json"
+      parameters:
+        - in: path
+          name: idRichiesta
+          required: true
+          type: number
+          description: "delete RichiestaProvvToRichiedenti to idRichiesta"
+        - in: path
+          name: idLeggeProvvDr
+          description: "ProvvToRichiedenti object that needs to be deleted"
+          required: true
+          type: number
+      responses:
+        "200":
+          description: "Success"
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "400":
+          description: "Invalid ID supplied"
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: "Richiedente not found"
+          schema:
+             $ref: '#/definitions/Error'
+        "405":
+          description: "Validation exception"
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+    post:
+      tags:
+      - "Richiesta  | Richiedenti | Provvedimenti"
+      summary: "Creare rel provv richiedente to richiesta"
+      description: "Create RichiedenteProvv to richiesta"
+      operationId: "createLeggeProvvDrToRichiesta"
+      parameters:
+        - in: path
+          name: idRichiesta
+          required: true
+          type: number
+        - in: path
+          name: idLeggeProvvDr
+          required: true
+          type: number
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/RichiedenteProvv"
+        "204":
+          description: No resource content
+        "400":
+          description: Bad request. Richiedente ID must be an integer and bigger than 0.
+          schema:
+             $ref: '#/definitions/Error'
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: A Richiedente with the specified ID was not found.
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+  /richieste/{idRichiesta}/richiedenti/provvedimenti:        
+    get:
+      tags:
+      - "Richiesta | RichiedenteProvv"
+      summary: "Find Richiedenti+Provv by idRichiesta"
+      description: "Find Richiedenti+Provv by idRichiesta"
+      operationId: "readAllRichiedenteProvv"
+      parameters:
+        - in: path
+          name: idRichiesta
+          required: true
+          type: number
+          description: find RichiedenteProvv by id richiesta
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/RichiedenteProvv"
+        "204":
+          description: No resource content
+        "400":
+          description: Bad request. Richiedente ID must be an integer and bigger than 0.
+          schema:
+             $ref: '#/definitions/Error'
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: A Richiedente with the specified ID was not found.
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+    put:
+      tags:
+      - "Richiesta | RichiedenteProvv"
+      summary: "Update RichiedenteProvv"
+      description: ""
+      operationId: "updateRichiedenteProvv"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - in: path
+          name: idRichiesta
+          required: true
+          type: number
+          description: update RichiedenteProvv
+        - in: "body"
+          name: "body"
+          description: "Richiedente object that needs to be added to the db"
+          required: true
+          schema:
+              $ref: "#/definitions/RichiedenteProvv"
+      responses:
+        "200":
+          description: "Success"
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "405":
+          description: "Invalid input"
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+          
+  /richieste/provvedimenti/finanziamenti:
+    get:
+      tags:
+      - "Richiesta | Provvedimenti&Finanziamenti"
+      summary: "Find All Provvedimenti and  Finanziamenti"
+      description: "Find All Provvedimenti and  Finanziamenti"
+      operationId: "readAllProvvFinToRichiesta"
+      parameters:
+        - in: query
+          name: idStatoFinanziamento
+          required: true
+          type: number
+          description: "Filter: PERFEZIONATO PER ACCONTO || PERFEZIONATO PER SALDO"
+        - in: query
+          name: idLeggeProvvDr
+          required: false
+          type: number
+        - in: query
+          name: dataProtRichiestaDa
+          required: false
+          type: string
+        - in: query
+          name: dataProtRichiestaA
+          required: false
+          type: string
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/RichiestaProvv"
+        "204":
+          description: No resource content
+        "400":
+          description: Bad request. Finanziamento ID must be an integer and bigger than 0.
+          schema:
+             $ref: '#/definitions/Error'
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: A Finanziamento with the specified ID was not found.
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+  
+  /richieste/richiestefilter:
+    post:
+      tags:
+      - "Richieste"
+      summary: "Search by Filter"
+      description: ""
+      operationId: "findRichiesteByFilter"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Richiesta object that needs to be added to the db"
+          required: true
+          schema:
+           $ref: "#/definitions/RichiestaFilter"
+      responses:
+        "200":
+          description: "Success"
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "405":
+          description: "Invalid input"
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+    
+definitions:
+  Richiesta:
+    type: "object"
+    properties:
+      idRichiesta:
+        type: "integer"
+        format: "int64"
+      numProtocollo:
+        type: "string"
+      dataProtocollo:
+        type: "string"
+      note:
+        type: "string"
+      idAssociazione:
+        type: "integer"
+      descAssociazione:
+        type: "string"
+      codTipoFormaAssociativa:
+        type: "string"
+      descTiposFormaAssociativa:
+        type: "string"
+      isValid:
+        type: "boolean"
+  Richiedente:
+    type: "object"
+    properties:
+      idRichiedente:
+        type: "integer"
+        format: "int64"
+      istatComune:
+        type: "string"
+      descComune:
+        type: "string"
+      popolazione:
+        type: "integer"
+      descProvincia:
+        type: "string"
+      siglaProvincia:
+        type: "string"
+  RichiedenteProvv:
+    type: "object"
+    properties:
+      idRichiedente:
+        type: "integer"
+        format: "int64"
+      istatComune:
+        type: "string"
+      descComune:
+        type: "string"
+      siglaProvincia:
+        type: "string"
+      popolazione:
+        type: "integer"
+      provvedimentiToRichiedente:
+        type: "array"
+        items:
+          $ref: '#/definitions/ProvvedimentiToRichiedente'
+  ProvvedimentiToRichiedente:
+    type: "object"
+    properties:
+      idLeggeProvvDr:
+        type: "integer"
+        format: "int64"
+      descLeggeProvvDr:
+        type: "string"
+      descVincoloPopolazione: 
+        type: "string"
+      flagDocumentazione:
+        type: "boolean"
+      flagRinuncia:
+        type: "boolean"
+  LeggeProvvDr:
+    type: "object"
+    properties:
+      idLeggeProvvDr:
+        type: "integer"
+        format: "int64"
+      descLeggeProvvDr:
+        type: "string"
+      idLegge:
+        type: "integer"
+      descLegge:
+        type: "string"
+      idProvvedimento:
+        type: "integer"
+      descProvvedimento:
+        type: "string"
+      idDr: 
+        type: "integer"
+      descDr:
+        type: "string"
+      idVincoloPopolazione:
+        type: "integer"
+      descVincoloPopolazione:
+        type: "string"
+      isValid:
+        type: "boolean"
+        default: null
+  RichiestaFilter:
+    type: "object"
+    properties:
+      numProtocollo:
+        type: "string"
+      dataProtocolloDa:
+        type: "string"
+      dataProtocolloA:
+        type: "string"
+      istatComune:
+        type: "string"
+      idTipoFormaAssociativa:
+        type: "number"
+      denominazioneAssociazione:
+        type: "string"
+      idLeggeProvvDr:
+        type: "number"
+      idVincoloPopolazione:
+        type: "number"
+      idStatoFinanziamento:
+        type: "number"
+      numDetermina:
+        type: "string"
+      dataDetermina:
+        type: "string"
+      idParere:
+        type: "number"
+      attoApprovazione:
+        type: "string"
+      idRendiconto:
+        type: "number"
+      attoRinuncia:
+        type: "string"
+  RichiestaProvv:
+    type: "object"
+    properties:
+      idRichiesta:
+        type: "integer"
+        format: "int64"
+      numProtocollo:
+        type: "string"
+      dataProtocollo:
+        type: "string"
+      idLeggeProvvDr:
+        type: "number"
+      descLeggeProvvDr:
+        type: "string"
+      idFinanziamento:
+        type: "number"
+  Error:
+    type: "object"
+    properties:
+      code:
+        type: "number"    
+      message:
+        type: "string"

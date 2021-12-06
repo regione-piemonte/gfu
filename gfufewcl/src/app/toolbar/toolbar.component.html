@@ -1,0 +1,289 @@
+<header>
+
+  <div id="header-main">
+    <div class="container">
+        <div class="row">
+          <div class="col">
+            <p><span class="hidden">Istituzione di appartenenza</span> <a href="https://www.regione.piemonte.it/web/" target="_blank">Regione Piemonte</a></p>
+          </div>
+        </div>
+          <div class="row">
+            <div class="col-sm-9 col-md-4">
+              <a href="https://servizi.regione.piemonte.it/" rel="home" class="navbar-brand">
+                <h1><img src="assets/im/logo.svg" alt="logo Servizionline" class="im-logo" />
+                <span class="site-name">Servizi<strong>online</strong></span></h1>
+              </a>
+            </div>
+            <div class="col-sm-3 col-md-8 d-flex justify-content-end">
+              <nav class="navbar navbar-light">
+                <ul class="navbar-nav navbar-expand">
+                  <li class="nav-item info-item">
+                    <a class="nav-link" href="#" data-toggle="modal" data-target="#info"
+                      ><i class="fas fa-info-circle"
+                        ><span class="sr-only">Informazioni</span></i
+                      ></a
+                    >
+                  </li>
+
+                  <li class="nav-item dropdown user-item">
+                    <a
+                      class="nav-link dropdown-toggle"
+                      href="#"
+                      id="user"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                      ><i class="fa fa-user-circle" aria-hidden="true"></i>
+                      <span class="d-none d-lg-block d-xl-block"
+                        >{{ cognome }} {{ nome }} {{ codProfilo }}</span
+                      >
+                    </a>
+                    <div
+                      class="dropdown-menu shadow-sm utente ppo"
+                      aria-labelledby="user"
+                    >
+                      <div class="arrow"></div>
+                      <div class="title">
+                        <a
+                          href="#"
+                          onclick="closeUser(); return false;"
+                          class="closebtn d-sm-block d-md-none float-left mr-3"
+                        >
+                          <i class="fas fa-arrow-left"
+                            ><span class="sr-only">chiudi</span></i
+                          >
+                        </a>
+                        {{ codFiscale }}
+                      </div>
+                      <a
+                        class="popup-link"
+                        href="#"
+                        data-toggle="modal"
+                        data-target="#logout"
+                        ><i class="fas fa-sign-out-alt"></i> ESCI</a
+                      >
+                    </div>
+                  </li>
+                </ul>
+
+                <!-- /navbar-collapse -->
+
+            </nav>
+
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+
+
+  <!--   START  -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+      <h2 class="navbar-brand"><a href="/gfuwebauthless/" class="navbar-portal">GFU - Gestione Finanziamenti Urbanistici</a></h2>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars"></i>
+      </button>
+
+      <div class="navbar-collapse collapse w-100 order-3 dual-collapse2"  id="navbarTogglerDemo01">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" >Richiesta Finanziamento</a>
+            <div class="dropdown-menu">
+              <li>
+                <a
+                  class="nav-link"
+                  [routerLink]="['richiesta/search']"
+                  routerLinkActive="active"
+                  >Ricerca</a
+                >
+              </li>
+              <li *ngIf="codProfilo !== 'GUEST'">
+                <a
+                  class="nav-link"
+                  [routerLink]="['richiesta/nuova']"
+                  routerLinkActive="active"
+                  (click)="navigate($event, 'richiesta/nuova')"
+                  >Nuova Richiesta</a
+                >
+              </li>
+              <li *ngIf="codProfilo !== 'GUEST'">
+                <a
+                  class="nav-link"
+                  [routerLink]="['richiesta/associa-determina']"
+                  routerLinkActive="active"
+                  >Associa Determina</a
+                >
+              </li>
+            </div>
+          </li>
+
+          <li class="nav-item dropdown" *ngIf="codProfilo !== 'GUEST'">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown">
+              Anagrafiche
+            </a>
+            <div class="dropdown-menu">
+              <li>
+                <a
+                  class="nav-link"
+                  [routerLink]="['anagrafica/provvedimenti']"
+                  routerLinkActive="active"
+                  >Leggi-DR-Provvedimenti</a
+                >
+              </li>
+              <li>
+                <a
+                  class="nav-link"
+                  [routerLink]="['anagrafica/pareri']"
+                  routerLinkActive="active"
+                  >Pareri</a
+                >
+              </li>
+              <li>
+                <a
+                  class="nav-link"
+                  [routerLink]="['anagrafica/percentuali']"
+                  routerLinkActive="active"
+                  >Percentuali</a
+                >
+              </li>
+              <li>
+                <a
+                  class="nav-link"
+                  [routerLink]="['anagrafica/rendiconti']"
+                  routerLinkActive="active"
+                  >Rendiconti</a
+                >
+              </li>
+              <li>
+                <a
+                  class="nav-link"
+                  [routerLink]="['anagrafica/vincolo-popolazione']"
+                  routerLinkActive="active"
+                  >Vincolo popolazione</a
+                >
+              </li>
+              <li>
+                <a
+                  class="nav-link"
+                  [routerLink]="['anagrafica/tetto-max']"
+                  routerLinkActive="active"
+                  >Tetto massimo</a
+                >
+              </li>
+            </div>
+          </li>
+          <li class="nav-item" *ngIf="codProfilo === 'SUPERADMIN'">
+            <a
+              class="nav-link"
+              [routerLink]="['anagrafica/utenti']"
+              routerLinkActive="active"
+              >Utenti</a
+            >
+          </li>
+        </ul>
+    </div>
+
+
+
+    </div>
+  </nav>
+  <!--   STOP  -->
+</header>
+
+<!-- Modal logout -->
+<div
+  class="modal fade"
+  id="logout"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="logout"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Esci</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="grey">Sei sicuro di voler uscire?</div>
+      </div>
+      <div class="modal-footer">
+        <div class="row">
+          <div class="col">
+            <button
+              type="button"
+              class="btn btn-outline-primary float-left"
+              data-dismiss="modal"
+            >
+              No
+            </button>
+            </div>
+            <div class="col text-right">
+            <button
+              (click)="ssoLogout()"
+              class="btn btn-primary float-right"
+              data-dismiss="modal"
+            >
+              Si
+            </button>
+            <a
+              href="sottoscrizione_respinto.shtml"
+              class="btn btn-primary float-right"
+              data-dismiss="modal"
+              >Si</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--/ Modal logout -->
+
+<!-- Modal info -->
+<div
+  class="modal fade"
+  id="info"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="info"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Informazioni / Aiuto</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="grey text-left">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
+          euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan
+          et viverra justo commodo. Proin sodales pulvinar sic tempor. Sociis
+          natoque penatibus et magnis dis parturient montes, nascetur ridiculus
+          mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus
+          mollis orci, sed rhoncus pronin sapien nunc accuan eget.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--/ Modal info -->

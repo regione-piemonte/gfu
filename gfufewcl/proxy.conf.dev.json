@@ -1,0 +1,8 @@
+{
+  "/gfuweb/api/*": {
+      "target": "http://<@devHostName@>:<@portDevHostName>/",
+      "secure": false,
+      "logLevel": "debug",
+      "changeOrigin": true
+  }
+}

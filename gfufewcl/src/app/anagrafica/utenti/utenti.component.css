@@ -1,0 +1,36 @@
+/**
+ * @license
+ * Copyright CSI-Piemonte - 2021
+ *
+ * SPDX-License-Identifier: EUPL-1.2-or-later.
+**/
+.container {
+  /* check carfeully: */
+  min-height: calc(100vh - 340.75px - 146.38px - 32px);
+}
+
+.section-title {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin: 32px 0;
+}
+
+.centered-btn {
+  display: flex;
+  justify-content: center;
+  margin: 16px 0 32px 0;
+}
+
+.centered-btn > button {
+  margin: 0 2rem;
+  width: 6.35rem;
+}
+
+.table-container {
+  margin-top: 48px;
+  margin-bottom: 32px;
+}
+
+:host ::ng-deep .hidden-actions > .ng2-smart-actions .ng2-smart-action {
+  display: none !important;
+}

@@ -1,0 +1,38 @@
+<!--
+	Copyright CSI-Piemonte - 2021
+
+	SPDX-License-Identifier: EUPL-1.2-or-later.
+ -->
+<div class="modal-header">
+  <h4 class="modal-title">{{ data.title }}</h4>
+  <i class="fa fa-times" ngbAutofocus aria-hidden="true" (click)="activeModal.close(0)"></i>
+</div>
+
+<div class="modal-body">
+  <span [innerHTML]="data.content"></span>
+</div>
+
+<div class="modal-footer" *ngIf="data.mode === 'confirm'">
+  <div class="row">
+    <div class="col">
+      <button type="button" class="btn btn-outline-primary" (click)="activeModal.close(0)">
+        ANNULLA
+      </button>
+    </div>
+    <div class="col text-right">
+      <button type="button" class="btn btn-primary" (click)="activeModal.close(1)">
+        CONFERMA
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-footer text-right" *ngIf="data.mode === 'info'">
+  <div class="row">
+    <div class="col text-right">
+      <button type="button" class="btn btn-primary" (click)="activeModal.close(0)">
+        OK
+      </button>
+    </div>
+  </div>
+</div>

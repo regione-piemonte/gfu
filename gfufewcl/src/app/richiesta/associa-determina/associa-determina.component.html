@@ -1,0 +1,108 @@
+<!--
+	Copyright CSI-Piemonte - 2021
+
+	SPDX-License-Identifier: EUPL-1.2-or-later.
+ -->
+<div class="container">
+  <div class="section-title">
+    RICERCA PROVVEDIMENTI
+  </div>
+
+  <form [formGroup]="ricercaForm" *ngIf="ricercaForm">
+    <div class="row">
+      <div class="form-group col-md-4">
+        <label for="dataFrom">Data richiesta da</label>
+        <input type="date" class="form-control" id="dataFrom" formControlName="dataFrom"/>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="dataTo">Data richiesta a</label>
+        <input type="date" class="form-control" id="dataTo" formControlName="dataTo"/>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group col-md-8">
+        <label for="lpd">Legge - Provvedimento - D.R.</label>
+        <input type="text" class="form-control" id="lpd" formControlName="lpd" [ngbTypeahead]="searchLPD"
+          [resultFormatter]="formatLPD" [inputFormatter]="formatLPD">
+        <small *ngIf="loading" class="form-text text-muted"><em>Loading...</em></small>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="statoFin">Stato finanziamento*</label>
+        <select class="form-control" id="statoFin" formControlName="statoFinanziamento">
+          <option *ngFor="let stato of statiFinanziamento" [value]="stato.idStatoFinanziamento"> {{ stato.descrizione }} </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row mb-5">
+      <div class="col">
+        <button class="btn btn-primary" (click)="clearForm()">
+          Annulla
+        </button>
+      </div>
+      <div class="col text-right">
+        <button class="btn btn-primary" (click)="search()">
+          Ricerca
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <ng-container *ngIf="searchResult">
+    <div class="row table-container">
+      <div class="col">
+        <div class="scrollbar-table scrollbar-primary">
+          <ng2-smart-table #resultTable
+            [settings]="resultTableSettings"
+            [source]="resultTableSource"
+            (edit)="viewDetail($event)"
+            (userRowSelect)="selectRow($event.selected)">
+          </ng2-smart-table>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-5">
+      <div class="col text-right">
+        <button class="btn btn-primary mr-2" (click)="exportCSV()">
+          Esporta
+        </button>
+        <!-- <button class="btn btn-primary" (click)="print()">
+          Stampa
+        </button> -->
+      </div>
+    </div>
+
+    <form [formGroup]="determinaForm">
+      <hr>
+      <div class="section-title">
+        DETERMINA
+      </div>
+
+      <div class="row">
+        <div class="form-group col-md-4">
+          <label for="numDet">Num. determina*</label>
+          <input type="text" class="form-control" id="numDet" formControlName="numDetermina"/>
+        </div>
+        <div class="form-group col-md-4">
+          <label for="dataDet">Data Determina*</label>
+          <input type="date" class="form-control" id="dataDet" formControlName="dataDetermina"/>
+        </div>
+        <div class="form-group form-btn col-md-4">
+          <button class="btn btn-primary" (click)="onCercaDetermina()" [disabled]="!enableCercaDetBtn">Cerca determina</button>
+          <button class="btn btn-primary" (click)="onConsultaAllegato()" [disabled]="!determinaUrl">Consulta allegato</button>
+        </div>
+      </div>
+
+      <div class="row mb-5">
+        <div class="col text-right">
+          <button class="btn btn-primary" (click)="associaDetermina()" [disabled]="!enableAssociaBtn">
+            Associa determina
+          </button>
+        </div>
+      </div>
+    </form>
+  </ng-container>
+
+</div>

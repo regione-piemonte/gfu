@@ -1,0 +1,46 @@
+<!--
+	Copyright CSI-Piemonte - 2021
+
+	SPDX-License-Identifier: EUPL-1.2-or-later.
+ -->
+<div class="section-title">
+  PROVVEDIMENTI
+</div>
+
+<form [formGroup]="provvedimentoForm">
+  <div class="row">
+    <!-- <div class="form-group col-md-8">
+      <label for="lpd">LEGGE - PROVVEDIMENTO - D.R.</label>
+      <select class="form-control" id="lpd" formControlName="lpd">
+        <option *ngFor="let l of lpdList" [ngValue]="l"> {{ l.descLeggeProvvDr }} </option>
+      </select>
+    </div> -->
+
+    <div class="form-group col-md-8">
+      <label for="lpd">Legge - Provvedimento - D.R.</label>
+      <input type="text" class="form-control" id="lpd" formControlName="lpd" [ngbTypeahead]="searchLPD">
+      <small *ngIf="loading" class="form-text text-muted"><em>Loading...</em></small>
+    </div>
+
+    <div class="form-group form-btn col-md-4">
+      <button class="btn btn-primary" (click)="onAggiungi()" [disabled]="!lpdAddable || !provvedimentoForm?.get('lpd')?.value">Aggiungi</button>
+      <!-- <button class="btn btn-primary" (click)="onElimina()" [disabled]="tableData.length === 0 || !lpdDeletable || !showEliminaBtn">Elimina</button> -->
+      <button class="btn btn-primary" (click)="onElimina()" [disabled]="!lpdDeletable">Elimina</button>
+    </div>
+  </div>
+</form>
+
+<ng-container *ngIf="tableData.length > 0">
+  <div class="row table-container">
+    <div class="col">
+      <div class="scrollbar-table scrollbar-primary">
+        <ng2-smart-table
+          #provvedimentiTable
+          [settings]="provvedimentiTableSettings"
+          [source]="provvedimentiTableSource"
+          (editConfirm)="onEdit($event)">
+        </ng2-smart-table>
+      </div>
+    </div>
+  </div>
+</ng-container>

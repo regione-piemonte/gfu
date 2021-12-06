@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright CSI-Piemonte -2021
+  SPDX-License-Identifier: EUPL-1.2-or-later.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+	   http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/util 
+	   http://www.springframework.org/schema/util/spring-util.xsd"
+>
+	<bean class="it.csi.gfu.gfuweb.business.SpringApplicationContextHelper"></bean>
+	<context:component-scan base-package="it.csi.gfu.gfuweb.business.service.impl" />
+	
+    <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">      	
+		<property name="jndiName" value="gfuweb/jdbc/gfuwebDS" />
+		<property name="proxyInterface" value="javax.sql.DataSource" />
+	</bean>
+    <bean id="namedJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">  
+        <constructor-arg ref="dataSource"></constructor-arg> 
+    </bean>  
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="mailfarm-app.csi.it" />
+        <property name="port" value="25" />
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.transport.protocol">smtp</prop>
+                <prop key="mail.smtp.auth">false</prop>
+                <prop key="mail.smtp.starttls.enable">false</prop>
+            </props>
+        </property>
+    </bean>
+	<context:component-scan base-package="it.csi.gfu.gfuweb.integration" />
+</beans>

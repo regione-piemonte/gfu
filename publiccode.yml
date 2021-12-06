@@ -1,0 +1,104 @@
+# This repository adheres to the publiccode.yml standard by including this 
+# metadata file that makes public software easily discoverable.
+# More info at https://github.com/italia/publiccode.yml
+
+publiccodeYmlVersion: '0.2'
+applicationSuite: GFU
+categories:
+  - business-process-management
+  - document-management
+dependsOn:
+  open:
+    - name: PostgreSQL
+      optional: true
+      version: 9.2.6
+      versionMax: ''
+      versionMin: '9'
+    - name: APACHE 2
+      optional: true
+      version: 2.2.31
+      versionMax: ''
+      versionMin: '2'
+    - name: JBOSS
+      optional: true
+      version: EAP 6.4.5.GA
+      versionMax: ''
+      versionMin: EAP 6
+description:
+  it:
+    features:
+      - >- 
+      - GFU (Gestione Finanziamenti Urbanistici) gestisce i finanziamenti urbanistici in ambito regionale
+    genericName: GFU
+    localisedName: GFU
+    longDescription: >
+      Gestisce la richiesta di finanziamenti urbanistici dal singolo Comune o da un'associazione di Comuni.
+          
+      
+      L’applicativo fornisce le seguenti macro-funzionalità:
+      
+      - **Gestione Richiesta Finanziamento**
+      
+      Consente la gestione della richiesta in tutte le sue parti:
+      - dati anagrafici del richidente (Comune o Associazioni di Comuni)
+      - provvedimenti 
+      - finanziamenti
+      - erogazioni (acconto e saldo)
+      - vista d'integrazione servizi pratiche urbanistiche
+      
+      - **Ricerche semplice e avanzate**
+      Consente d'individuare facilmente una o più richiesta attraverso i numerosi filtri a disposizione
+      
+      - **Associazione determine**
+      Consente l'associazione massiva di una determina all'erogazione di acconto e di saldo delle richieste.
+      
+      - **Gestione tabelle di decodifica**
+      Consente all'utilizzatore del sistema di arricchire le tabelle di anagrafica dell'intero progetto
+      percentuali
+      rendiconti
+      tetto massimo
+      
+      - **Gestione Utenti**
+      Consente l'inserimento dell'utente nell'anagrafica degli utilizzatori del sistema scegliendo
+      il profilo adatto.
+     
+      
+    shortDescription: Gestione Finanziamenti Urbanistici
+developmentStatus: stable
+it:
+  conforme:
+    gdpr: true
+    lineeGuidaDesign: true
+    misureMinimeSicurezza: true
+    modelloInteroperabilita: true
+  countryExtensionVersion: '0.2'
+  piattaforme:
+    anpr: false
+    cie: false
+    pagopa: false
+    spid: false
+  riuso:
+    codiceIPA: r_piemon
+landingURL: 'https://github.com/regione-piemonte/gfu'
+legal:
+  license: EUPL-1.2
+  mainCopyrightOwner: Regione Piemonte
+  repoOwner: Regione Piemonte
+localisation:
+  availableLanguages:
+    - it
+  localisationReady: false
+maintenance:
+  contacts:
+    - email:
+      name: 
+  type: internal
+name: GFU
+platforms:
+  - web
+  - linux
+  - windows
+releaseDate: '2021-12-06'
+softwareType: standalone/web
+softwareVersion: 1.0.0
+url: 'https://github.com/regione-piemonte/gfu.git'

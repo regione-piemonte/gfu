@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright CSI-Piemonte -2021
+  SPDX-License-Identifier: EUPL-1.2-or-later.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>it.csi.gfu</groupId>
+		<artifactId>gfuweb</artifactId>
+		<version>1.0.0</version>
+	</parent>
+
+	<artifactId>gfuweb-web</artifactId>
+	<packaging>war</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>it.csi.gfu</groupId>
+			<artifactId>gfuweb-jar</artifactId>
+			<version>1.0.0</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-web-api</artifactId>
+			<version>6.0</version>  <!-- Jboss EAP 6.x -->
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.14</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>csipiemonte</groupId>
+			<artifactId>iridev2</artifactId>
+			<version>2.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>it.csi.csi</groupId>
+			<artifactId>csi-stadapter</artifactId>
+			<version>1.4.6</version>
+		</dependency>
+	
+</dependencies>
+	<build>
+		<filters>
+			<!-- Carico il profilo per l'ambiente target -->
+			<filter>profiles/${build.profile.id}/config.properties</filter>
+		</filters>
+		<plugins>
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+					<webResources>
+						<resource>
+							<!-- abilita il replace dei placeholder -->
+							<filtering>true</filtering>
+							<!-- this is relative to the pom.xml directory -->
+							<directory>src/main/resources</directory>
+						</resource>
+					</webResources>
+				</configuration>
+			</plugin>
+			
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+			
+		</plugins>
+	</build>
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<build.profile.id>dev</build.profile.id>
+			</properties>
+		</profile>
+		<!-- Configurazioni per l'ambiente di produzione -->
+		<profile>
+			<id>prod-rp-01</id>
+			<properties>
+				<build.profile.id>prod-rpo-01</build.profile.id>
+			</properties>
+		</profile>
+		<profile>
+			<id>tst-rp-01</id>
+			<properties>
+				<build.profile.id>tst-rp-01</build.profile.id>
+			</properties>
+		</profile>
+		<profile>
+			<id>local-all-rp-01</id>
+			<properties>
+				<build.profile.id>local-all-rp-01</build.profile.id>
+			</properties>
+		</profile>
+	</profiles>
+
+</project>

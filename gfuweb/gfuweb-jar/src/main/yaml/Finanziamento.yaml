@@ -1,0 +1,937 @@
+swagger: "2.0"
+info:
+  description: "Gfuweb API Specification"
+  version: "1.0.0"
+  title: "GFU API"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "gfu@csi.it"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:10110"
+basePath: "/gfuweb/api/v1"
+tags:
+- name: "USC"
+  description: "Urbanistica Senza Carta"
+schemes:
+- "http"
+paths:
+  /richieste/{idRichiesta}/provvedimenti/{idProvvedimento}/finanziamenti:
+    get:
+      tags:
+      - "Richiesta | Finanziamento"
+      summary: "Reads Finanziamento To Provv To Richiesta"
+      description: ""
+      operationId: "readFinanziamentoToProvRich"
+      parameters:
+        - in: path
+          name: idRichiesta
+          type: integer
+          required: true
+        - in: path
+          name: idProvvedimento
+          type: integer
+          required: true  
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/Finanziamento"
+        "204":
+          description: No resource content
+        "400":
+          description: Bad request. Finanziamento ID must be an integer and bigger than 0.
+          schema:
+             $ref: '#/definitions/Error'
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: A Finanziamento with the specified ID was not found.
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+    post:
+      tags:
+      - "Richiesta | Finanziamento"
+      summary: "Create a new Finanziamento"
+      description: ""
+      operationId: "createFinanziamento"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - in: path
+          name: idRichiesta
+          type: integer
+          required: true
+        - in: path
+          name: idProvvedimento
+          type: integer
+          required: true  
+        - in: "body"
+          name: "body"
+          description: "Finanziamento object that needs to be added to the db"
+          required: true
+          schema:
+            $ref: "#/definitions/Finanziamento"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/Finanziamento"
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "405":
+          description: "Invalid input"
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+  /finanziamenti/{idFinanziamento}:
+     get:
+      tags:
+      - "Finanziamento"
+      summary: "Find Finanziamento by Pk"
+      description: "Find Finanziamento by Pk"
+      operationId: "readFinanziamentoByPk"
+      parameters:
+        - in: path
+          name: idFinanziamento
+          required: true
+          type: number
+          description: find Finanziamento by Pk
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+              $ref: "#/definitions/Finanziamento"
+        "204":
+          description: No resource content
+        "400":
+          description: Bad request. Finanziamento ID must be an integer and bigger than 0.
+          schema:
+             $ref: '#/definitions/Error'
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: A Finanziamento with the specified ID was not found.
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+  /richieste/{idRichiesta}/finanziamenti/{idFinanziamento}:
+     put:
+        tags:
+        - "Finanziamento"
+        summary: "Update an existing Finanziamento"
+        description: ""
+        operationId: "updateFinanziamentop"
+        consumes:
+        - "application/json"
+        produces:
+        - "application/json"
+        parameters:
+          - in: path
+            name: idRichiesta
+            required: true
+            type: number
+            description: find Finanziamento by Pk
+          - in: path
+            name: idFinanziamento
+            required: true
+            type: number
+            description: find Finanziamento by Pk
+          - in: "body"
+            name: "body"
+            description: "Finanziamento object that needs to be update"
+            required: true
+            schema:
+              $ref: "#/definitions/Finanziamento"
+        responses:
+          "200":
+            description: "Success"
+            schema:
+               $ref: "#/definitions/Finanziamento"
+          "401":
+            description: Authorization information is missing or invalid.
+            schema:
+               $ref: '#/definitions/Error'
+          "400":
+            description: "Invalid ID supplied"
+            schema:
+               $ref: '#/definitions/Error'
+          "404":
+            description: "Finanziamento not found"
+            schema:
+               $ref: '#/definitions/Error'
+          "405":
+            description: "Validation exception"
+            schema:
+               $ref: '#/definitions/Error'
+          "500":
+            description: Internal Server Error.
+            schema:
+               type: string
+          default:
+            description: Unexpected error.
+  /finanziamenti/{idFinanziamento}/erogazioni:
+    get:
+      tags:
+      - "Finanziamento | Erogazioni"
+      summary: "Find All Erogazioni to Finanziamento"
+      description: "Find All Erogazioni to Finanziamento"
+      operationId: "readAllErogazioniToFinanziamento"
+      parameters:
+        - in: path
+          name: idFinanziamento
+          required: true
+          type: number
+          description: Find All Erogazioni to Finanziamento
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Erogazione"
+        "204":
+          description: No resource content
+        "400":
+          description: Bad request. Finanziamento ID must be an integer and bigger than 0.
+          schema:
+             $ref: '#/definitions/Error'
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: A Finanziamento with the specified ID was not found.
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+    post:
+      tags:
+      - "Finanziamento | Erogazioni"
+      summary: "Create a new Erogazione"
+      description: ""
+      operationId: "createErogazione"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - in: path
+          name: idFinanziamento
+          type: integer
+          required: true
+        - in: "body"
+          name: "body"
+          description: "Erogazione object that needs to be added to the db"
+          required: true
+          schema:
+            $ref: "#/definitions/Erogazione"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/Finanziamento"
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "405":
+          description: "Invalid input"
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+  /finanziamenti/{idFinanziamento}/erogazioni/{idErogazione}:
+    put:
+      tags:
+      - "Finanziamento | Erogazioni"
+      summary: "Update a Erogazione"
+      description: ""
+      operationId: "updateErogazione"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - in: path
+          name: idFinanziamento
+          type: integer
+          required: true
+        - in: path
+          name: idErogazione
+          type: integer
+          required: true
+        - in: "body"
+          name: "body"
+          description: "Erogazione object that needs to be updated to the db"
+          required: true
+          schema:
+            $ref: "#/definitions/Erogazione"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/Finanziamento"
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "405":
+          description: "Invalid input"
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+         
+  /finanziamenti/erogazioni/determine:       
+    put:
+        tags:
+        - "Finanziamento | Erogazioni"
+        summary: "Update all Erogazioni to link Determine"
+        description: ""
+        operationId: "updateAllErogazioniToDetermina"
+        consumes:
+        - "application/json"
+        produces:
+        - "application/json"
+        parameters:
+          - in: "body"
+            name: "body"
+            required: true
+            schema:
+              $ref: "#/definitions/DeterminaToErogazioni"
+        responses:
+          "200":
+            description: "Success"
+            schema:
+               $ref: "#/definitions/Finanziamento"
+          "401":
+            description: Authorization information is missing or invalid.
+            schema:
+               $ref: '#/definitions/Error'
+          "400":
+            description: "Invalid ID supplied"
+            schema:
+               $ref: '#/definitions/Error'
+          "404":
+            description: "Finanziamento not found"
+            schema:
+               $ref: '#/definitions/Error'
+          "405":
+            description: "Validation exception"
+            schema:
+               $ref: '#/definitions/Error'
+          "500":
+            description: Internal Server Error.
+            schema:
+               type: string
+          default:
+            description: Unexpected error.
+            
+  /finanziamenti/{idFinanziamento}/stato:
+    get:
+      tags:
+      - "Finanziamento | Stato Finanziamento"
+      summary: "Find Stato Finanziamento to Finanziamento"
+      description: "Find stato finanziamento"
+      operationId: "readStatoFinanziamento"
+      parameters:
+        - in: path
+          name: idFinanziamento
+          required: true
+          type: number
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/StatoFinanziamento"
+        "204":
+          description: No resource content
+        "400":
+          description: Bad request. Finanziamento ID must be an integer and bigger than 0.
+          schema:
+             $ref: '#/definitions/Error'
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: A Finanziamento with the specified ID was not found.
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+          
+  /finanziamenti/{idFinanziamento}/stato/{idStatoFinanziamento}:
+    put:
+      tags:
+      - "Finanziamento | Stato Finanziamento"
+      summary: "Update Stato Finanziamento to Finanziamento"
+      description: ""
+      operationId: "updateStatoFinToFinanziamento"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - in: path
+          name: idFinanziamento
+          type: integer
+          required: true
+        - in: path
+          name: idStatoFinanziamento
+          type: integer
+          required: true
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/Finanziamento"
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "405":
+          description: "Invalid input"
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error. MMM
+  /finanziamenti/{idFinanziamento}/pratiche:
+    get:
+      tags:
+      - "Richiesta | Finanziamento | Pratica UrbGFU"
+      summary: "Reads Pratica Urbanistica Finanziamento"
+      description: ""
+      operationId: "readPraticaUrbGfuToFinanziamento"
+      parameters:
+        - in: path
+          name: idFinanziamento
+          type: integer
+          required: true
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/Finanziamento"
+        "204":
+          description: No resource content
+        "400":
+          description: Bad request. Finanziamento ID must be an integer and bigger than 0.
+          schema:
+             $ref: '#/definitions/Error'
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: A Finanziamento with the specified ID was not found.
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+    post:
+      tags:
+      - "Richiesta | Finanziamento | Pratica UrbGFU"
+      summary: "Create a new Pratica Urb Gfu - Associa Pratica Urb a Finanziamento Gfu"
+      description: ""
+      operationId: "createPraticaUrbGfu"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - in: path
+          name: idFinanziamento
+          type: integer
+          required: true
+        - in: "body"
+          name: "body"
+          description: "Finanziamento object that needs to be added to the db"
+          required: true
+          schema:
+            $ref: "#/definitions/PraticaUrbGfu"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/Finanziamento"
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "405":
+          description: "Invalid input"
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+    delete:
+      tags:
+      - "Richiesta | Finanziamento | Pratica UrbGFU"
+      summary: "Delete associazione Pratica Urb to Finanziamento Gfu"
+      description: ""
+      operationId: "deletePraticaUrbGfu"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - in: path
+          name: idFinanziamento
+          type: integer
+          required: true
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/Finanziamento"
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "405":
+          description: "Invalid input"
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+  /finanziamenti/{idFinanziamento}/pratiche/{numPratica}:
+    get:
+      tags:
+      - "Richiesta | Finanziamento | Pratica UrbGFU"
+      summary: "Reads Pratica Urbanistica Detail in PRAURB"
+      description: ""
+      operationId: "readPraticaUrbDetail"
+      parameters:
+        - in: path
+          name: idFinanziamento
+          type: integer
+          required: true
+        - in: path
+          name: numPratica
+          type: string
+          required: true
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/PraticaUrb"
+        "204":
+          description: No resource content
+        "400":
+          description: Bad request. .
+          schema:
+             $ref: '#/definitions/Error'
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: A Finanziamento with the specified ID was not found.
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+  /finanziamenti/pratiche/:
+    get:
+      tags:
+      - "Richiesta | Finanziamento | Pratica UrbGFU"
+      summary: "Reads Pratiche in PRAURB by Filter (Istat Comune | dataProvDa | dataProvvA) "
+      description: ""
+      operationId: "readAllPraticheUrbByFilter"
+      parameters:
+        - in: query
+          name: istatComune
+          required: true
+          type: string
+        - in: query
+          name: dataProvvedimentoDa
+          required: false
+          type: string
+        - in: query
+          name: dataProvvedimentoA
+          required: false
+          type: string
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/PraticaUrbSintetica"
+        "204":
+          description: No resource content
+        "400":
+          description: Bad request. .
+          schema:
+             $ref: '#/definitions/Error'
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: A Finanziamento with the specified ID was not found.
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+  
+definitions:
+  Finanziamento:
+    type: "object"
+    properties:
+      idFinanziamento:
+        type: "integer"
+        format: "int64"
+      importoFinanziabile:
+        type: "number"
+      importoAmmesso:
+        type: "number"
+      valuta:
+        type: "string"
+      fkImportoTettoMax:
+        type: "number"
+      PraticaUrbGfu:
+        $ref: '#/definitions/PraticaUrbGfu'
+      note:
+        type: "string"
+      idLeggeProvvDr:
+        type: "number"
+      Percentuale:
+        $ref: '#/definitions/Percentuale'
+      Parere:
+        $ref: '#/definitions/Parere'
+      Rendiconto:
+        $ref: '#/definitions/Rendiconto'
+      StatoFinanziamento:
+        $ref: '#/definitions/StatoFinanziamento'
+      StatoFinanziamentoPrec:
+        $ref: '#/definitions/StatoFinanziamento'
+      Rinuncia:
+        $ref: '#/definitions/Rinuncia'
+      Erogazioni:
+        type: "array"
+        items:
+          $ref: '#/definitions/Erogazione'
+  PraticaUrbGfu:
+    type: "object"
+    properties:
+      idPraticaUrb:
+        type: "integer"
+        format: "int64"
+      numPraticaUrb:
+        type: "string"
+      numAttoApprovazioneUrb:
+        type: "string"
+      dataAttoApprovazioneUrb:
+        type: "string"
+      fkFinanziamento:
+        type: "number"
+  PraticaUrbSintetica:
+    type: "object"
+    properties:
+      numPratica:
+        type: "string"
+      numProvvedimento:
+        type: "string"
+      dataProvvedimento:
+        type: "string"
+      descTipoProvvedimento:
+        type: "string"
+      esitoProvvedimento:
+        type: "string"
+      numBUR:
+        type: "string"
+      dataBUR:
+        type: "string"
+  Erogazione:
+    type: "object"
+    properties:
+      idErogazione:
+        type: "integer"
+        format: "int64"
+      idTipoErogazione:
+        type: "number"
+      descTipoErogazione:
+        type: "string"
+      idFinanziamento:
+        type: "number"
+      importoErogazione:
+        type: "number"
+      valuta:
+        type: "string"
+      numDetermina:
+        type: "string"
+      dataDetermina:
+        type: "string"
+  Rinuncia:
+    type: "object"
+    properties:
+      idFinanziamentoRinuncia:
+        type: "integer"
+        format: "int64"
+      importo: 
+        type: "number"
+      valuta:
+        type: "string"
+      attoRinuncia:
+        type: "string"
+  Rendiconto:
+    type: "object"
+    properties:
+      idRendiconto:
+        type: "integer"
+        format: "int64"
+      descRendiconto: 
+        type: "string"
+  Parere:
+    type: "object"
+    properties:
+      idParere:
+        type: "integer"
+        format: "int64"
+      descParere: 
+        type: "string"
+  Percentuale:
+    type: "object"
+    properties:
+      idPercentuale:
+        type: "integer"
+        format: "int64"
+      descPercentuale: 
+        type: "string"
+  StatoFinanziamento:
+    type: "object"
+    properties:
+      idStatoFinanziamento:
+        type: "integer"
+        format: "int64"
+      descStatoFinanziamento: 
+        type: "string"
+  FinanziamentiDaAssociare:
+     type: "object"
+     properties:
+       idFinanziamento:
+         type: "number"
+  DeterminaToErogazioni:
+    type: "object"
+    properties:
+      numDetermina: 
+        type: "string"
+      dataDetermina:
+        type: "string"
+      FinanziamentiDaAssociare:
+            type: "array"
+            items:
+              $ref: "#/definitions/FinanziamentiDaAssociare"
+  PraticaUrb:
+    type: "object"
+    properties:
+      numPratica:
+        type: "string"
+      numProtocollo:
+        type: "string"
+      dataIngressoRegione:
+        type: "string"
+      descTipoPratica:
+        type: "string"
+      oggettoPratica:
+        type: "string"
+      descStatoPratica:
+        type: "string"
+      elencoComunePv: 
+        type: "string"
+      provvedimentiUrb: 
+        type: "array"
+        items:
+         $ref: "#/definitions/ProvvedimentoUrb"
+      conferenzeUrb: 
+        type: "array"
+        items:
+         $ref: "#/definitions/ConferenzaUrb"
+      adeguamentoUrb: 
+        type: "array"
+        items:
+         $ref: "#/definitions/AdeguamentoUrb"
+  ProvvedimentoUrb:
+    type: "object"
+    properties:
+      numProvvedimento: 
+        type: "string"
+      dataProvvedimento:
+        type: "string"
+      descTipoProvvedimento:
+        type: "string"
+      esitoProvvedimento:
+        type: "string"
+      numBUR:
+        type: "string"
+      dataBUR:
+        type: "string"
+  ConferenzaUrb:
+    type: "object"
+    properties:
+      descTipoConferenza: 
+        type: "string"
+      descTipoPassoIter:
+        type: "string"
+      dataPassoIter:
+        type: "string"
+      numProtocolloPassoIter:
+        type: "string"
+  AdeguamentoUrb:
+    type: "object"
+    properties:
+      descTipoPianoSovr:
+        type: "string"
+  PraticaFilter:
+    type: "object"
+    properties:
+      istatComune:
+        type: "string"
+      dataProvvedimentoUrbDa:
+        type: "string"
+      dataProvvedimentoUrbA:
+        type: "string"
+  Error:
+    type: "object"
+    properties:
+      codeMessage:
+        type: "number"    
+      userMessage:
+        type: "string"
+      internalMessage:
+        type: "string"

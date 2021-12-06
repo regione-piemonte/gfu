@@ -1,0 +1,213 @@
+swagger: "2.0"
+info:
+  description: "Praurb API Specification"
+  version: "1.0.0"
+  title: "PRAURB API"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "praurb@csi.it"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:10110"
+basePath: "/praurb/api/"
+tags:
+- name: "USC"
+  description: "Urbanistica Senza Carta - PRAURB"
+schemes:
+- "https"
+paths:
+  /pratiche:
+    get:
+      tags:
+      - "Pratiche"
+      summary: "Reads pratiche from database"
+      description: ""
+      operationId: "readPraticheToComuneDate"
+      parameters:
+        - in: query
+          name: istatComune
+          required: false
+          type: string
+        - in: query
+          name: dataProvvedimentoDa
+          required: true
+          type: string  
+        - in: query
+          name: dataProvvedimentoA
+          required: true
+          type: string  
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/PraticaUrbSintetica"
+        "204":
+          description: No resource content
+        "400":
+          description: Bad request.
+          schema:
+             $ref: '#/definitions/Error'
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: A Richiesta with the specified ID was not found.
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+    
+  /pratiche/{numPratica}:
+    get:
+      tags:
+      - "Pratiche"
+      summary: "Reads pratica to numPratica from database"
+      description: ""
+      operationId: "readPraticaByNumPratica"
+      parameters:
+        - in: path
+          name: numPratica
+          required: true
+          type: string
+          description: find Richiesta by num pratica
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+              $ref: "#/definitions/PraticaUrb"
+        "204":
+          description: No resource content
+        "400":
+          description: Bad request. Richiesta ID must be an integer and bigger than 0.
+          schema:
+             $ref: '#/definitions/Error'
+        "401":
+          description: Authorization information is missing or invalid.
+          schema:
+             $ref: '#/definitions/Error'
+        "403":
+          description: Resource Forbidden
+          schema:
+             $ref: '#/definitions/Error'
+        "404":
+          description: A Richiesta with the specified ID was not found.
+          schema:
+             $ref: '#/definitions/Error'
+        "500":
+          description: Internal Server Error.
+          schema:
+            type: string
+        default:
+          description: Unexpected error.
+definitions:
+  PraticaUrbSintetica:
+    type: "object"
+    properties:
+      numPratica:
+        type: "string"
+      numProvvedimento:
+        type: "string"
+      dataProvvedimento:
+        type: "string"
+      descTipoProvvedimento:
+        type: "string"
+      esitoProvvedimento:
+        type: "string"
+      numProtocolloBUR:
+        type: "string"
+      dataProcolloBUR:
+        type: "string"
+  PraticaUrb:
+     type: "object"
+     properties:
+      numPratica:
+        type: "string"
+      numProtocollo:
+        type: "string"
+      dataIngressoRegione:
+        type: "string"
+      descTipoPratica:
+        type: "string"
+      oggettoPratica:
+        type: "string"
+      descStatoPratica:
+        type: "string"
+      elencoComunePv: 
+        type: "string"
+      provvedimentiUrb: 
+        type: "array"
+        items:
+         $ref: "#/definitions/ProvvedimentoUrb"
+      conferenzeUrb: 
+        type: "array"
+        items:
+         $ref: "#/definitions/ConferenzaUrb"
+      adeguamentoUrb: 
+        type: "array"
+        items:
+         $ref: "#/definitions/AdeguamentoUrb"
+  ProvvedimentoUrb:
+    type: "object"
+    properties:
+      numProvvedimento: 
+        type: "string"
+      dataProvvedimento:
+        type: "string"
+      descTipoProvvedimento:
+        type: "string"
+      esitoProvvedimento:
+        type: "string"
+      numBURProvvedimento:
+        type: "string"
+      dataBURProvvedimento:
+        type: "string"
+  ConferenzaUrb:
+    type: "object"
+    properties:
+      descTipoConferenza: 
+        type: "string"
+      descTipoPassoIter:
+        type: "string"
+      dataPassoIter:
+        type: "string"
+      numProtocolloPassoIter:
+        type: "string"
+  AdeguamentoUrb:
+    type: "object"
+    properties:
+      descTipoPianoSovr:
+        type: "string"
+  PraticaFilter:
+    type: "object"
+    properties:
+      istatComune:
+        type: "string"
+      dataProvvedimentoDa:
+        type: "string"
+      dataProvvedimentoA:
+        type: "string"
+  Error:
+    type: "object"
+    properties:
+      code:
+        type: "number"    
+      message:
+        type: "string"

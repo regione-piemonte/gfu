@@ -1,0 +1,145 @@
+/**
+ * @license
+ * Copyright CSI-Piemonte - 2021
+ *
+ * SPDX-License-Identifier: EUPL-1.2-or-later.
+**/
+.section-title {
+  font-weight: bold;
+  font-size: 1.0rem;
+  margin: 32px 0;
+}
+
+.centered-btn {
+  display: flex;
+  justify-content: center;
+  margin: 16px 0 32px 0;
+}
+
+.centered-btn > button {
+  margin: 0 0.5rem;
+  min-width: 6.35rem;
+}
+
+.table-container {
+  margin-bottom: 32px;
+}
+
+.tab-container {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.nav-tabs {
+  border-bottom: 1px solid #005ca9;
+  padding: 0;
+}
+
+/* .tab-button-link:last-child{
+  padding: 4px 16px 8px 16px;
+  margin: 5px 0 0px;
+} */
+
+.tab-button-link:not(:first-child){
+  padding: 4px 16px 8px 16px;
+  margin-top: 5px;
+}
+
+.row-erogazioni {
+  align-items: flex-end;
+}
+
+.row-erogazioni button {
+  width: 7.65rem;
+  padding: 0.3rem 0.75rem;
+}
+
+.form-btn {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+}
+
+.form-btn > button {
+  margin: 0 2rem 0 0;
+  width: auto;
+}
+
+.radio-box {
+border: 1px solid #005ca9;
+margin: 1px;
+align-items: flex-end;
+}
+
+.boxed-data-title {
+  margin: 2rem 0 1rem;
+}
+
+.boxed-data {
+  border: 1px solid #dee2e6;
+  padding: 15px 15px 0 15px;
+}
+
+.boxed-data div {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+:host ::ng-deep .ng2-smart-row {
+  cursor: pointer;
+}
+
+:host ::ng-deep .ng2-smart-row.selected {
+  background-color: rgb(203 225 244 / 50%) !important;
+}
+
+
+
+.radio-box {
+  border: 1px solid #ced4da;
+  margin: 1px;
+  align-items: flex-end;
+  }
+
+
+.box-title{
+  padding-top: 5px;
+  border-bottom: 1px solid #ced4da;
+}
+
+.box-title label{
+  margin-left: 5px;
+}
+
+.pressed, .pressedtm {
+  border: 1px solid #005ca9;
+  /*border-top:4px solid #005ca9 !important;*/
+  color:#005ca9!important;
+  }
+
+  .pressed .box-title, .pressedtm .box-title{
+    padding-top: 5px;
+    border-bottom: 8px solid #005ca9;
+}
+
+  .un-pressed, .un-pressedtm {
+    border:1px solid #ced4da !important;
+    color: #000 !important;
+  }
+
+
+
+/*.pressedtm {
+  border-color: #005ca9 !important;
+  color: #000 !important;
+  }
+
+
+
+  .un-pressedtm {
+    border:1px solid #005ca9 !important;
+    color: #000 !important;
+  }
+*/

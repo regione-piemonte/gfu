@@ -1,0 +1,299 @@
+<!--
+	Copyright CSI-Piemonte - 2021
+
+	SPDX-License-Identifier: EUPL-1.2-or-later.
+ -->
+<div class="container">
+  <h3>Anagrafiche</h3>
+
+  <ngb-accordion >
+    <ngb-panel title="LEGGI">
+      <ng-template ngbPanelContent>
+        <div class="scrollbar-table scrollbar-primary">
+          <ng2-smart-table
+          [settings]="leggiTableSettings"
+          [source]="leggiTableSource"
+          (createConfirm)="onCreateLegge($event)"
+          (editConfirm)="onEditLegge($event)"
+          (deleteConfirm)="onDeleteLegge($event)">
+        </ng2-smart-table>
+      </div>
+      </ng-template>
+    </ngb-panel>
+    <ngb-panel  title="PROVVEDIMENTI">
+      <ng-template ngbPanelContent>
+        <div class="scrollbar-table scrollbar-primary">
+          <ng2-smart-table
+            [settings]="provvTableSettings"
+            [source]="provvTableSource"
+            (createConfirm)="onCreateProvvedimento($event)"
+            (editConfirm)="onEditProvvedimento($event)"
+            (deleteConfirm)="onDeleteProvvedimento($event)">
+          </ng2-smart-table>
+        </div>
+      </ng-template>
+    </ngb-panel>
+    <ngb-panel  title="D.R.">
+      <ng-template ngbPanelContent>
+        <form [formGroup]="drForm">
+          <div class="row">
+            <div class="form-group col-md-3">
+              <label for="tipoDirettiva">Tipo direttiva regionale</label>
+              <select class="form-control" id="tipo" formControlName="tipoDr">
+                <option *ngFor="let tipo of tipiDrList" [ngValue]="tipo">
+                  {{ tipo.descTipoDr }}
+                </option>
+              </select>
+            </div>
+            <div class="form-group col-md-2">
+              <label for="numero">Numero</label>
+              <input
+                type="text"
+                class="form-control"
+                id="numero"
+                formControlName="numeroDr"
+              />
+            </div>
+            <div class="form-group col-md-2">
+              <label for="data">Data</label>
+              <input
+                type="date"
+                class="form-control"
+                id="data"
+                formControlName="dataDr"
+              />
+            </div>
+            <div class="form-group col-md-3">
+              <label for="desc">Descrizione</label>
+              <input
+                type="text"
+                class="form-control"
+                id="desc"
+                formControlName="descrizioneDr"
+              />
+            </div>
+
+            <div class="form-group col-md-2 form-btn">
+              <button class="btn btn-primary" (click)="addDr()">Aggiungi</button>
+            </div>
+          </div>
+        </form>
+        <div class="scrollbar-table scrollbar-primary">
+            <ng2-smart-table
+              [settings]="drTableSettings"
+              [source]="drTableSource"
+              (editConfirm)="onEditDr($event)"
+              (deleteConfirm)="onDeleteDr($event)">
+            </ng2-smart-table>
+        </div>
+      </ng-template>
+    </ngb-panel>
+    <ngb-panel  title="LEGGI - PROVVEDIMENTI - D.R.">
+      <ng-template ngbPanelContent>
+        <div class="scrollbar-table scrollbar-primary">
+              <ng2-smart-table
+              [settings]="leggeProvvDrTableSettings"
+              [source]="leggeProvvDrTableSource"
+              (createConfirm)="onSaveLPD($event)"
+              (editConfirm)="onSaveLPD($event, true)"
+              (deleteConfirm)="onDeleteLPD($event)">
+              </ng2-smart-table>
+      </div>
+      </ng-template>
+      </ngb-panel>
+  </ngb-accordion>
+</div>
+
+
+
+<!-- MMM START
+
+  <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0">
+    <ngb-panel title="LEGGI">
+        <template ngbPanelContent>
+      <ng2-smart-table
+        [settings]="leggiTableSettings"
+        [source]="leggiTableSource"
+        (createConfirm)="onCreateLegge($event)"
+        (editConfirm)="onEditLegge($event)"
+        (deleteConfirm)="onDeleteLegge($event)"
+      >
+      </ng2-smart-table>
+    </template>
+    </ngb-panel>
+    <ngb-panel title="PROVVEDIMENTI">
+      <ng2-smart-table
+          [settings]="provvTableSettings"
+          [source]="provvTableSource"
+          (createConfirm)="onCreateProvvedimento($event)"
+          (editConfirm)="onEditProvvedimento($event)"
+          (deleteConfirm)="onDeleteProvvedimento($event)"
+        >
+        </ng2-smart-table>
+    </ngb-panel>
+    <ngb-panel title="DIRETTIVE REGIONALI">
+      <form [formGroup]="drForm">
+        <div class="row">
+          <div class="form-group col-md-3">
+            <label for="tipoDirettiva">Tipo Direttiva Regionale</label>
+            <select class="form-control" id="tipo" formControlName="tipoDr">
+              <option *ngFor="let tipo of tipiDrList" [ngValue]="tipo">
+                {{ tipo.descTipoDr }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group col-md-2">
+            <label for="numero">Numero</label>
+            <input
+              type="text"
+              class="form-control"
+              id="numero"
+              formControlName="numeroDr"
+            />
+          </div>
+          <div class="form-group col-md-2">
+            <label for="data">Data</label>
+            <input
+              type="date"
+              class="form-control"
+              id="data"
+              formControlName="dataDr"
+            />
+          </div>
+          <div class="form-group col-md-3">
+            <label for="desc">Descrizione</label>
+            <input
+              type="text"
+              class="form-control"
+              id="desc"
+              formControlName="descrizioneDr"
+            />
+          </div>
+
+          <div class="form-group col-md-2 form-btn">
+            <button class="btn btn-primary" (click)="addDr()">AGGIUNGI DR</button>
+          </div>
+        </div>
+      </form>
+    </ngb-panel>
+    <ngb-panel title="LEGGE - PROVVEDIMENTO - D.R.">
+      <ng-template ngbPanelContent>
+        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
+        terry richardson ad squid. 3 wolf moon officia aute, non cupidatat
+        skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
+        Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
+        single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh
+        helvetica, craft beer labore wes anderson cred nesciunt sapiente ea
+        proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft
+        beer farm-to-table, raw denim aesthetic synth nesciunt you probably
+        haven't heard of them accusamus labore sustainable VHS.
+      </ng-template>
+    </ngb-panel>
+  </ngb-accordion>    MMM STOP -->
+
+  <!--<button class="accordion">Section 1</button>
+
+  <div class="panel">
+    <div class="row">
+      <div class="col">
+        <div class="section-title">LEGGI</div>
+        <ng2-smart-table
+          [settings]="leggiTableSettings"
+          [source]="leggiTableSource"
+          (createConfirm)="onCreateLegge($event)"
+          (editConfirm)="onEditLegge($event)"
+          (deleteConfirm)="onDeleteLegge($event)"
+        >
+        </ng2-smart-table>
+      </div>
+    </div>
+  </div>
+
+  <button class="accordion">Section 2</button>
+  <div class="panel">
+    <div class="row">
+      <div class="col">
+        <div class="section-title">PROVVEDIMENTI</div>
+        <ng2-smart-table
+          [settings]="provvTableSettings"
+          [source]="provvTableSource"
+          (createConfirm)="onCreateProvvedimento($event)"
+          (editConfirm)="onEditProvvedimento($event)"
+          (deleteConfirm)="onDeleteProvvedimento($event)"
+        >
+        </ng2-smart-table>
+      </div>
+    </div>
+  </div>-->
+
+  <!-- MMM div class="section-title">DIRETTIVE REGIONALI</div>
+  <form [formGroup]="drForm">
+    <div class="row">
+      <div class="form-group col-md-3">
+        <label for="tipoDirettiva">Tipo Direttiva Regionale</label>
+        <select class="form-control" id="tipo" formControlName="tipoDr">
+          <option *ngFor="let tipo of tipiDrList" [ngValue]="tipo">
+            {{ tipo.descTipoDr }}
+          </option>
+        </select>
+      </div>
+      <div class="form-group col-md-2">
+        <label for="numero">Numero</label>
+        <input
+          type="text"
+          class="form-control"
+          id="numero"
+          formControlName="numeroDr"
+        />
+      </div>
+      <div class="form-group col-md-2">
+        <label for="data">Data</label>
+        <input
+          type="date"
+          class="form-control"
+          id="data"
+          formControlName="dataDr"
+        />
+      </div>
+      <div class="form-group col-md-3">
+        <label for="desc">Descrizione</label>
+        <input
+          type="text"
+          class="form-control"
+          id="desc"
+          formControlName="descrizioneDr"
+        />
+      </div>
+
+      <div class="form-group col-md-2 form-btn">
+        <button class="btn btn-primary" (click)="addDr()">AGGIUNGI DR</button>
+      </div>
+    </div>r
+  </form>
+
+  <div class="row table-container">
+    <div class="col">
+      <ng2-smart-table
+        [settings]="drTableSettings"
+        [source]="drTableSource"
+        (editConfirm)="onEditDr($event)"
+        (deleteConfirm)="onDeleteDr($event)"
+      >
+      </ng2-smart-table>
+    </div>
+  </div>
+
+  <div class="row last-table">
+    <div class="col">
+      <div class="section-title">LEGGE - PROVVEDIMENTO - D.R.</div>
+      <ng2-smart-table
+        [settings]="leggeProvvDrTableSettings"
+        [source]="leggeProvvDrTableSource"
+        (createConfirm)="onSaveLPD($event)"
+        (editConfirm)="onSaveLPD($event, true)"
+        (deleteConfirm)="onDeleteLPD($event)"
+      >
+      </ng2-smart-table>
+    </div>
+  </div></div MMM STOP-->
+

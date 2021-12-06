@@ -1,0 +1,175 @@
+<!--
+	Copyright CSI-Piemonte - 2021
+
+	SPDX-License-Identifier: EUPL-1.2-or-later.
+ -->
+<div class="container">
+  <div class="section-title">
+    RICERCA RICHIESTE
+  </div>
+
+  <form [formGroup]="ricercaForm" *ngIf="ricercaForm">
+    <div class="row">
+      <div class="form-group col-md-4">
+        <label for="numProtocollo">Protocollo</label>
+        <input type="text" class="form-control" id="numProtocollo" formControlName="numProtocollo"/>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="dataFrom">Data richiesta da</label>
+        <input type="date" class="form-control" id="dataFrom" formControlName="dataFrom"/>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="dataTo">Data richiesta a</label>
+        <input type="date" class="form-control" id="dataTo" formControlName="dataTo"/>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group col-md-4">
+        <label for="provincia">Provincia</label>
+        <input type="text" class="form-control" id="provincia" formControlName="provincia"/>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="comune">Comune</label>
+        <input type="text" class="form-control" id="comune" formControlName="comune"
+          [ngbTypeahead]="searchComune" [resultTemplate]="rt" [inputFormatter]="comuneFieldFormatter"/>
+        <small *ngIf="comuniLoading" class="form-text text-muted"><em>Loading...</em></small>
+      </div>
+      <ng-template #rt let-r="result" let-t="term">
+        <ngb-highlight [result]="r.descComune" [term]="t"></ngb-highlight>
+      </ng-template>
+    </div>
+
+    <div class="row">
+      <div class="form-group col-md-4">
+        <label for="tipoFA">Tipo forma associativa</label>
+        <select class="form-control" id="tipoFA" formControlName="tipoFormaAssociativa">
+          <option *ngFor="let tipo of tipiFormaAssociativa" [ngValue]="tipo.idTipoFormaAssociativa"> {{ tipo.descrizione }} </option>
+        </select>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="denomFa">Denominazione forma associativa</label>
+        <input type="text" class="form-control" id="denomFa" formControlName="denomFormaAssociativa" [ngbTypeahead]="searchAssociazione"/>
+        <small *ngIf="associazioniLoading" class="form-text text-muted"><em>Loading...</em></small>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group col-md-8">
+        <label for="lpd">Legge - Provvedimento - D.R.</label>
+        <input type="text" class="form-control" id="lpd" formControlName="lpd" [ngbTypeahead]="searchLPD"
+          [resultFormatter]="lpdFieldFormatter" [inputFormatter]="lpdFieldFormatter">
+        <small *ngIf="lpdLoading" class="form-text text-muted"><em>Loading...</em></small>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="popolazione">Popolazione</label>
+        <select class="form-control" id="popolazione" formControlName="popolazione">
+          <option *ngFor="let vincolo of vincoliPopolazione" [ngValue]="vincolo.idVincoloPopolazione"> {{ vincolo.descrizione }} </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group col-md-4">
+        <label for="statoFin">Stato finanziamento</label>
+        <select class="form-control" id="statoFin" formControlName="statoFinanziamento">
+          <option *ngFor="let stato of statiFinanziamento" [ngValue]="stato.idStatoFinanziamento"> {{ stato.descrizione }} </option>
+        </select>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="numDet">Num. determina</label>
+        <input type="text" class="form-control" id="numDet" formControlName="numDetermina"/>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="dataDet">Data determina</label>
+        <input type="date" class="form-control" id="dataDet" formControlName="dataDetermina"/>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group col-md-4">
+        <label for="parere">Parere</label>
+        <select class="form-control" id="parere" formControlName="parere">
+          <option *ngFor="let par of pareri" [ngValue]="par.idParere"> {{ par.descrizione }} </option>
+        </select>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="rend">Rendiconto</label>
+        <select class="form-control" id="rend" formControlName="rendiconto">
+          <option *ngFor="let rend of rendiconti" [ngValue]="rend.idRendiconto"> {{ rend.descrizione }} </option>
+        </select>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="rinuncia">Atto rinuncia</label>
+        <input type="text" class="form-control" id="rinuncia" formControlName="attoRinuncia"/>
+      </div>
+    </div>
+
+    <!--div class="row">
+      <div class="form-group col-md-4">
+        <label for="rinuncia">Atto di rinuncia</label>
+        <input type="text" class="form-control" id="rinuncia" formControlName="attoRinuncia"/>
+      </div>
+    </div-->
+
+    <div class="row">
+      <div class="form-group col-md-4 checkfox-filter">
+        <input type="checkbox" id="flgPraUrb" formControlName="flgPraticaAssociata">
+        <label for="flgPraUrb">Pratica Urbanistica</label>
+      </div>
+      <div class="form-group col-md-3">
+        <label for="numPraUrb">Num. pratica</label>
+        <input type="text" class="form-control" id="numPraUrb" formControlName="numPraUrb"/>
+      </div>
+      <div class="form-group col-md-3">
+        <label for="numAtto">Num. atto approvazione</label>
+        <input type="text" class="form-control" id="numAtto" formControlName="numAttoApprovazione"/>
+      </div>
+      <div class="form-group col-md-2">
+        <label for="dataAtto">Data atto approvazione</label>
+        <input type="date" class="form-control" id="dataAtto" formControlName="dataAttoApprovazione"/>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col mb-5">
+      <button class="btn btn-primary" (click)="clearForm()">
+          Annulla
+        </button>
+      </div>
+      <div class="col mb-5 text-right">
+        <button class="btn btn-primary" (click)="search()">
+          Ricerca
+        </button>
+      </div>
+    </div>
+
+  </form>
+
+  <ng-container *ngIf="searchResult">
+    <div class="row table-container">
+      <div class="col">
+        <div class="scrollbar-table scrollbar-primary">
+          <ng2-smart-table
+            [settings]="richiesteTableSettings"
+            [source]="richiesteTableSource"
+            (edit)="viewDetail($event)"
+            (delete)="deleteRichiesta($event)">
+          </ng2-smart-table>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col text-right">
+        <button class="btn btn-primary mr-2" (click)="exportCSV()">
+          Esporta
+        </button>
+        <!-- <button class="btn btn-primary" (click)="print()">
+          Stampa
+        </button> -->
+      </div>
+    </div>
+  </ng-container>
+
+</div>

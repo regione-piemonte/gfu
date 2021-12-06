@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright CSI-Piemonte -2021
+  SPDX-License-Identifier: EUPL-1.2-or-later.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>it.csi.gfu</groupId>
+	<artifactId>gfuweb</artifactId>
+	<version>1.0.0</version>
+	<packaging>pom</packaging>
+	<name>gfuweb</name>
+
+
+	<modules>
+		<module>gfuweb-jar</module>
+		<module>gfuweb-web</module>
+		<module>gfuweb-ear</module>
+		<module>gfuweb-tar</module>
+	</modules>
+
+	<properties>
+		<build.profile.id>prod-rp-01</build.profile.id>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<spring.version>4.3.24.RELEASE</spring.version>
+		<tar.version>1.0.0</tar.version>
+		<jackson.version>1.9.9</jackson.version>
+		<jackson.jaxrs.version>1.9.12</jackson.jaxrs.version>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>it.csi.gfu</groupId>
+				<artifactId>gfuweb-jar</artifactId>
+				<version>1.0.0</version>
+				<type>jar</type>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>it.csi.gfu</groupId>
+				<artifactId>gfuweb-web</artifactId>
+				<version>1.0.0</version>
+				<type>war</type>
+				<scope>compile</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<profiles>
+		<!-- Configurazioni per l'ambiente di sviluppo -->
+		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<build.profile.id>dev</build.profile.id>
+			</properties>
+		</profile>
+		<!-- Configurazioni per l'ambiente di test -->
+		<profile>
+			<id>tst</id>
+			<properties>
+				<build.profile.id>tst</build.profile.id>
+			</properties>
+		</profile>
+		<!-- Configurazioni per l'ambiente di produzione -->
+		<profile>
+			<id>prod</id>
+			<properties>
+				<build.profile.id>prod</build.profile.id>
+			</properties>
+		</profile>
+		<profile>
+			<id>local-all</id>
+			<properties>
+				<build.profile.id>local-all</build.profile.id>
+			</properties>
+		</profile>
+	</profiles>
+
+</project>

@@ -1,0 +1,19 @@
+/**
+ * @license
+ * Copyright CSI-Piemonte - 2021
+ *
+ * SPDX-License-Identifier: EUPL-1.2-or-later.
+**/
+.modal-header i {
+  cursor: pointer;
+}
+
+.centered-btn {
+  display: flex;
+  justify-content: center;
+}
+
+.centered-btn > button {
+  margin: 0 4rem;
+  min-width: 6.75rem;
+}

@@ -1,0 +1,27 @@
+<!--
+	Copyright CSI-Piemonte - 2021
+
+	SPDX-License-Identifier: EUPL-1.2-or-later.
+ -->
+<div class="container">
+  <div>
+
+    <h3> Tetto massimo</h3>
+
+  <div class="row table-container">
+    <div class="col">
+      <div class="scrollbar-table scrollbar-primary">
+        <ng2-smart-table
+          [settings]="tettoMaxTableSettings"
+          [source]="tettoMaxTableSource"
+          (createConfirm)="onCreateElement($event)"
+          (editConfirm)="onEditElement($event)"
+          (deleteConfirm)="onDeleteElement($event)">
+        </ng2-smart-table>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+

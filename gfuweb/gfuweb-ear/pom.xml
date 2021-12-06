@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright CSI-Piemonte -2021
+  SPDX-License-Identifier: EUPL-1.2-or-later.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>it.csi.gfu</groupId>
+		<artifactId>gfuweb</artifactId>
+		<version>1.0.0</version>
+	</parent>
+
+	<artifactId>gfuweb-ear</artifactId>
+	<packaging>ear</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>it.csi.gfu</groupId>
+			<artifactId>gfuweb-web</artifactId>
+			<type>war</type>
+		</dependency>
+		<dependency>
+			<groupId>it.csi.gfu</groupId>
+			<artifactId>gfuweb-jar</artifactId>
+			<type>jar</type>
+		</dependency>	
+	</dependencies>
+
+	<build>
+	<finalName>gfuweb</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-ear-plugin</artifactId>
+				<configuration>
+					<defaultLibBundleDir>lib</defaultLibBundleDir>
+					<modules>
+						<webModule>
+							<groupId>it.csi.gfu</groupId>
+							<artifactId>gfuweb-web</artifactId>
+							<contextRoot>/gfuweb</contextRoot>
+							<uri>gfuweb-web.war</uri>
+						</webModule>
+					</modules>
+					<earSourceDirectory>${basedir}/src/main/resources</earSourceDirectory>
+					<earSourceIncludes>META-INF/*</earSourceIncludes>
+					<version>6</version>  <!-- Jboss EAP 6.x -->
+				</configuration>
+			</plugin>			
+		</plugins>
+	</build>
+
+</project>

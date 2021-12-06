@@ -1,0 +1,111 @@
+.container {
+  min-height: 35rem;
+}
+
+.section-title {
+  font-weight: bold;
+  font-size: 1.0rem;
+  margin: 32px 0;
+}
+
+.tab-container {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+}
+
+.tab-button {
+  color: #005ca9;
+  font-size: 1.1rem;
+  font-weight: bold;
+  padding: 0 1rem;
+}
+
+.tab-button:hover {
+  text-decoration: none;
+}
+.tab-button:focus {
+  /* todo */
+  text-decoration: none;
+}
+
+.tab-active::after {
+  content: '';
+  display: block;
+  position: relative;
+  height: 4px;
+  background-color: #005ca9;
+}
+
+.centered-btn {
+  display: flex;
+  justify-content: center;
+  margin: 0 0 32px 0;
+}
+
+.text-muted {
+  margin-top: 0;
+  margin-bottom: -19px;
+}
+
+.form-btn {
+  display: flex;
+  align-items: flex-end;
+}
+
+.form-btn button {
+  padding: 0.3rem 0.75rem;
+}
+
+.fixed-height {
+  /* height: 320px;
+  height: 20rem;*/
+}
+
+.table-associazione-container {
+  margin-bottom: 1rem;
+  max-height: 75vh;
+  overflow-y: auto;
+}
+
+.table-height-50 {
+  margin-bottom: 1rem;
+  max-height: 50vh;
+  overflow-y: auto;
+}
+.table-height-25 {
+  margin-bottom: 1rem;
+  max-height: 25vh;
+  overflow-y: auto;
+}
+
+.table-container {
+  margin-bottom: 1rem;
+}
+
+:host ::ng-deep .ng2-smart-action-multiple-select {
+  width: 3rem;
+}
+
+:host ::ng-deep .ng2-smart-titles > th {
+  text-align: center;
+}
+
+:host ::ng-deep .ng2-smart-titles > th > input {
+  width: 1rem;
+  height: 1rem;
+}
+
+:host ::ng-deep .ng2-smart-action-multiple-select > input {
+  width: 1rem;
+  height: 1rem;
+  display: unset;
+}
+
+:host ::ng-deep table tr td {
+  pointer-events: none;
+}
+
+:host ::ng-deep table tr td > * {
+  pointer-events: auto;
+}
