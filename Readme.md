@@ -1,4 +1,4 @@
-# gfuweb -  "Gestione Finanziamenti Urbanistici" web application 
+# GFU -  "Gestione Finanziamenti Urbanistici"
 
 # Description
  **gfuweb** the application allows the management of urban financing requests received from municipalities. Its process consists of:
