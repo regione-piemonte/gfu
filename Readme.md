@@ -48,7 +48,7 @@ Just deploy the content of the tar file created under the target folder on your 
 # Contributing
 Please read CONTRIBUTING.md for details on our code of conduct, and the process for submitting pull requests to us.
 
-# Versioning (Mandatory)
+# Versioning
 We use Semantic Versioning for versioning. (http://semver.org)
 
 # Authors
