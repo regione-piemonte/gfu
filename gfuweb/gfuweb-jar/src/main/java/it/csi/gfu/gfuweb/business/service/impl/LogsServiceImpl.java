@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright CSI-Piemonte -2021
+* © Copyright Regione Piemonte – 2021
 * SPDX-License-Identifier: EUPL-1.2-or-later.
 ******************************************************************************/
 package it.csi.gfu.gfuweb.business.service.impl;
@@ -47,6 +47,7 @@ public class LogsServiceImpl implements Logs{
 		catch (Exception e) 
 		{
 			e.printStackTrace();
+			System.out.println("SONO ENTRATO IN ECC ");
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).
 					entity(ResponseUtils.createJSONResponseMessage(Response.Status.INTERNAL_SERVER_ERROR.name(), "Server indisponibile")).build();
 		} 

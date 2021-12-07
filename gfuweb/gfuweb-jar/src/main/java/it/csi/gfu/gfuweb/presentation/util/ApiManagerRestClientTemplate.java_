@@ -1,0 +1,72 @@
+package it.csi.gfu.gfuweb.presentation.util;
+
+
+import org.apache.log4j.Logger;
+
+
+import it.csi.wso2.apiman.oauth2.helper.OauthHelper;
+import it.csi.gfu.gfuweb.util.Constants;
+import okhttp3.Response;
+
+public abstract class ApiManagerRestClientTemplate {
+	
+	public static final String AUTHORIZATION_HEADER_PARAM = "Authorization";
+	public static final String AUTHORIZATION_HEADER_PARAM_VALUE_PREFIX = "Bearer ";
+	private OauthHelper oauthHelper;
+	private String baseEndpoint;
+	private String apiVersion;
+	private String requestedEnv;
+	
+	protected static Logger LOG = Logger.getLogger(Constants.COMPONENT_NAME + ".ApiManagerRestClient");
+	
+	protected ApiManagerRestClientTemplate(OauthHelper oauthHelper, String baseEndpoint, String requestedEnv, String apiVersion) {
+		setOauthHelper(oauthHelper);
+		setBaseEndpoint(baseEndpoint);
+		setApiVersion(apiVersion);
+		setRequestedEnv(requestedEnv);
+	}
+
+	public Response callRestApi() {
+		String token = getOauthHelper().getToken();
+		return callRestApi(token);
+	}
+
+	protected abstract Response callRestApi(String token);
+
+
+	private OauthHelper getOauthHelper() {
+		return oauthHelper;
+	}
+
+	private void setOauthHelper(OauthHelper oauthHelper) {
+		this.oauthHelper = oauthHelper;
+	}
+
+
+	protected String getBaseEndpoint() {
+		return baseEndpoint;
+	}
+
+
+	private void setBaseEndpoint(String baseEndpoint) {
+		this.baseEndpoint = baseEndpoint;
+	}
+
+
+	protected String getApiVersion() {
+		return apiVersion;
+	}
+
+
+	private void setApiVersion(String apiVersion) {
+		this.apiVersion = apiVersion;
+	}
+
+	protected String getRequestedEnv() {
+		return requestedEnv;
+	}
+
+	private void setRequestedEnv(String requestedEnv) {
+		this.requestedEnv = requestedEnv;
+	}
+}

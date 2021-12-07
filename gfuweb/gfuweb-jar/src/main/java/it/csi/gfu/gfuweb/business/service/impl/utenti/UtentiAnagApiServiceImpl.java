@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright CSI-Piemonte -2021
+* © Copyright Regione Piemonte – 2021
 * SPDX-License-Identifier: EUPL-1.2-or-later.
 ******************************************************************************/
 package it.csi.gfu.gfuweb.business.service.impl.utenti;

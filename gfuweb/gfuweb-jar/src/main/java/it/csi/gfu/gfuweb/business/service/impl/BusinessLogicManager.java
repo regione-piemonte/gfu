@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright CSI-Piemonte -2021
+ * © Copyright Regione Piemonte – 2021
  * SPDX-License-Identifier: EUPL-1.2-or-later.
  ******************************************************************************/
 package it.csi.gfu.gfuweb.business.service.impl;
@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import javax.servlet.ServletContext;
 import javax.ws.rs.core.Context;
+
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -19,6 +20,7 @@ import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import it.csi.gfu.gfuweb.dto.comune.Comune;
 import it.csi.gfu.gfuweb.business.service.BusinessLogic;
 import it.csi.gfu.gfuweb.dto.Error;
@@ -144,6 +146,10 @@ public class BusinessLogicManager extends BusinessLogicExtServiceManager impleme
 		LOG.debug("[BusinessLogicManager : getUtenteByFilter] param cognome = " + utenteFilter.getCognome());
 		LOG.debug("[BusinessLogicManager : getUtenteByFilter] param codiceFiscale = " + utenteFilter.getCodiceFiscale());
 		listUtenteDto = utenteDao.findUtenteByFilter(utenteFilter);
+		System.out.println("listUtenteDto size MMM 8 " + listUtenteDto.size());
+		System.out.println("listUtenteDto dentro a BusinessLogicManager getUtenteByFilter MMM 5 " + listUtenteDto.get(0).getCognome());
+		System.out.println("listUtenteDto dentro a BusinessLogicManager getUtenteByFilter MMM 6 " + listUtenteDto.get(0).getProfilo().getCodProfilo());
+		System.out.println("listUtenteDto dentro a BusinessLogicManager getUtenteByFilter MMM 7 " + listUtenteDto.get(0).getCodiceFiscale());
 		return listUtenteDto;
 	}
 
@@ -154,6 +160,10 @@ public class BusinessLogicManager extends BusinessLogicExtServiceManager impleme
 		LOG.debug("[BusinessLogicManager : getUtenteByFilter] param cognome = " + utenteFilter.getCognome());
 		LOG.debug("[BusinessLogicManager : getUtenteByFilter] param codiceFiscale = " + utenteFilter.getCodiceFiscale());
 		utenteDto = utenteDao.findUtenteAuth(utenteFilter);
+
+		System.out.println("listUtenteDto dentro a BusinessLogicManager getUtenteByFilter MMM 5 " + utenteDto.getCognome());
+		System.out.println("listUtenteDto dentro a BusinessLogicManager getUtenteByFilter MMM 6 " + utenteDto.getProfilo().getCodProfilo());
+		System.out.println("listUtenteDto dentro a BusinessLogicManager getUtenteByFilter MMM 7 " + utenteDto.getCodiceFiscale());
 		return utenteDto;
 	}
 

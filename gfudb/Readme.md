@@ -1,3 +1,8 @@
+
+# Copyright Regione Piemonte - 2021
+# SPDX-License-Identifier: EUPL-1.2-or-later.
+
+
 # gfu db -  "Gestione Finanziamenti Urbanistici" Database
 
 # How to setup the database

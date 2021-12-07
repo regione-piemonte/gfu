@@ -1,5 +1,5 @@
 /*
-* Copyright CSI-Piemonte -2021
+* Copyright Regione Piemonte - 2021
 * SPDX-License-Identifier: EUPL-1.2-or-later.
 */
 INSERT INTO gfu.gfu_d_tipo_forma_associativa VALUES (1,'COMUNITA'' MONTANA','CM',FALSE);

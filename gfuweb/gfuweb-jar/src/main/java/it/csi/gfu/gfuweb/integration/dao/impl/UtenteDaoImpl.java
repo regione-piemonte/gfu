@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright CSI-Piemonte -2021
+* © Copyright Regione Piemonte – 2021
 * SPDX-License-Identifier: EUPL-1.2-or-later.
 ******************************************************************************/
 package it.csi.gfu.gfuweb.integration.dao.impl;
@@ -46,6 +46,7 @@ public class UtenteDaoImpl  extends JdbcDaoSupport implements UtenteDao {
 	public List<Utente>  findUtenteByFilter(UtenteFilter utenteFilter) throws DaoException, SystemException {
 		LOG.debug("[UtenteDaoImpl::findUtenteByFilter] BEGIN");
 		LOG.debug("[UtenteDaoImpl - findUtenteByFilter] param  codice fiscale = " + utenteFilter.getCodiceFiscale());
+		System.out.println("param   MMM INT 1 codice fiscale = \" + utenteFilter.getCodiceFiscale() "  + utenteFilter.getCodiceFiscale());
 
 		StringBuilder sql = new StringBuilder();
 
@@ -61,10 +62,13 @@ public class UtenteDaoImpl  extends JdbcDaoSupport implements UtenteDao {
 		List<Utente> result = null;
 
 		LOG.debug("[UtenteDaoImpl - findUtenteByFilter] query =" + sql.toString());
+		System.out.println("[UtenteDaoImpl - findUtenteByFilter] query = "  + sql.toString());
+
 		LOG.debug("[UtenteDaoImpl - findUtenteByFilter] param  nome = " + utenteFilter.getNome());
 		LOG.debug("[UtenteDaoImpl - findUtenteByFilter] param  cognome = " + utenteFilter.getCognome());
 		LOG.debug("[UtenteDaoImpl - findUtenteByFilter] param  codice fiscale = " + utenteFilter.getCodiceFiscale());
-        
+        System.out.println(" MMM INT 2  codFiscale " + utenteFilter.getCodiceFiscale());
+
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("CODICE_FISCALE", utenteFilter.getCodiceFiscale());
 
@@ -91,7 +95,7 @@ public class UtenteDaoImpl  extends JdbcDaoSupport implements UtenteDao {
 	public Utente  findUtenteAuth(UtenteFilter utenteFilter) throws DaoException, SystemException {
 		LOG.debug("[UtenteDaoImpl::findUtenteByFilter] BEGIN");
 		LOG.debug("[UtenteDaoImpl - findUtenteByFilter] param  codice fiscale = " + utenteFilter.getCodiceFiscale());
-		
+		System.out.println("param   MMM INT 1 codice fiscale = \" + utenteFilter.getCodiceFiscale() "  + utenteFilter.getCodiceFiscale());
 
 		StringBuilder sql = new StringBuilder();
 
@@ -107,12 +111,12 @@ public class UtenteDaoImpl  extends JdbcDaoSupport implements UtenteDao {
 		Utente result = null;
 
 		LOG.debug("[UtenteDaoImpl - findUtenteByFilter] query =" + sql.toString());
-		
+		System.out.println("[UtenteDaoImpl - findUtenteByFilter] query = "  + sql.toString());
 
 		LOG.debug("[UtenteDaoImpl - findUtenteByFilter] param  nome = " + utenteFilter.getNome());
 		LOG.debug("[UtenteDaoImpl - findUtenteByFilter] param  cognome = " + utenteFilter.getCognome());
 		LOG.debug("[UtenteDaoImpl - findUtenteByFilter] param  codice fiscale = " + utenteFilter.getCodiceFiscale());
-        
+        System.out.println(" MMM INT 2  codFiscale " + utenteFilter.getCodiceFiscale());
 
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("CODICE_FISCALE", utenteFilter.getCodiceFiscale());
