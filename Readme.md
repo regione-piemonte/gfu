@@ -54,8 +54,8 @@ We use Semantic Versioning for versioning. (http://semver.org)
 # Authors
 See the list of contributors who participated in this project in file AUTHORS.txt.
 
-#Copyrights
-See the list of copyrighters in this project in file Copyrights.txt or put here the list of names and years in the form of “© Copyright name – year(s)”.
+# Copyrights
+See the list of copyrighters in this project in file Copyrights.txt
 
 # License
 Licensed EUPL 1.2. See the LICENSE.txt file for details
