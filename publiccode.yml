@@ -3,7 +3,6 @@
 # More info at https://github.com/italia/publiccode.yml
 
 publiccodeYmlVersion: '0.2'
-applicationSuite: GFU
 categories:
   - business-process-management
   - document-management
@@ -14,7 +13,7 @@ dependsOn:
       version: 9.2.6
       versionMax: ''
       versionMin: '9'
-    - name: APACHE 2
+    - name: Apache httpd
       optional: true
       version: 2.2.31
       versionMax: ''
@@ -27,44 +26,70 @@ dependsOn:
 description:
   it:
     features:
-      - >- 
-      - GFU (Gestione Finanziamenti Urbanistici) gestisce i finanziamenti urbanistici in ambito regionale
+      - Gestione Richiesta Finanziamento
+      - Ricerche semplice e avanzate
+      - Associazione determine
+      - Gestione tabelle di decodifica
+      - Gestione Utenti
     genericName: GFU
-    localisedName: GFU
-    longDescription: >
-      Gestisce la richiesta di finanziamenti urbanistici dal singolo Comune o da un'associazione di Comuni.
-          
-      
-      L’applicativo fornisce le seguenti macro-funzionalità:
-      
-      - **Gestione Richiesta Finanziamento**
-      
+    longDescription: |
+      Gestisce la richiesta di finanziamenti urbanistici dal singolo Comune o da
+      un'associazione di Comuni.
+
+
+      L’applicativo fornisce le seguenti macro-funzionalità:      
+
+
+      ### Gestione Richiesta Finanziamento
+
+
       Consente la gestione della richiesta in tutte le sue parti:
-      - dati anagrafici del richidente (Comune o Associazioni di Comuni)
+
+
+      - dati anagrafici del richiedente (Comune o Associazioni di Comuni)
+
       - provvedimenti 
+
       - finanziamenti
+
       - erogazioni (acconto e saldo)
+
       - vista d'integrazione servizi pratiche urbanistiche
-      
-      - **Ricerche semplice e avanzate**
-      Consente d'individuare facilmente una o più richiesta attraverso i numerosi filtri a disposizione
-      
-      - **Associazione determine**
-      Consente l'associazione massiva di una determina all'erogazione di acconto e di saldo delle richieste.
-      
-      - **Gestione tabelle di decodifica**
-      Consente all'utilizzatore del sistema di arricchire le tabelle di anagrafica dell'intero progetto
-      percentuali
-      rendiconti
-      tetto massimo
-      
-      - **Gestione Utenti**
-      Consente l'inserimento dell'utente nell'anagrafica degli utilizzatori del sistema scegliendo
-      il profilo adatto.
-     
-      
+
+
+      ### Ricerche semplice e avanzate
+
+       Consente d'individuare facilmente una o più richiesta attraverso i numerosi filtri a disposizione
+
+      ### Associazione determine
+
+
+      Consente l'associazione massiva di una determina all'erogazione di acconto
+      e di saldo delle richieste.
+
+
+      ### Gestione tabelle di decodifica
+
+
+      Consente all'utilizzatore del sistema di arricchire le tabelle di
+      anagrafica dell'intero progetto
+
+
+      - percentuali
+
+      - rendiconti
+
+      - tetto massimo
+
+
+      ### Gestione Utenti
+
+       Consente l'inserimento dell'utente nell'anagrafica degli utilizzatori del sistema scegliendo il profilo adatto.
     shortDescription: Gestione Finanziamenti Urbanistici
 developmentStatus: stable
+intendedAudience:
+  countries:
+    - it
 it:
   conforme:
     gdpr: true
@@ -79,8 +104,9 @@ it:
     spid: false
   riuso:
     codiceIPA: r_piemon
-landingURL: 'https://github.com/regione-piemonte/gfu'
+landingURL: 'https://github.com/regione-piemonte/gfu.git'
 legal:
+  authorsFile: 'https://raw.githubusercontent.com/regione-piemonte/gfu/master/Copyright.txt'
   license: EUPL-1.2
   mainCopyrightOwner: Regione Piemonte
   repoOwner: Regione Piemonte
@@ -90,15 +116,17 @@ localisation:
   localisationReady: false
 maintenance:
   contacts:
-    - email:
-      name: 
+    - email: mauro.vasone@csi.it
+      name: Mauro Vasone
   type: internal
 name: GFU
 platforms:
   - web
-  - linux
   - windows
+  - linux
 releaseDate: '2021-12-06'
 softwareType: standalone/web
 softwareVersion: 1.0.0
-url: 'https://github.com/regione-piemonte/gfu.git'
+url: 'https://github.com/regione-piemonte/gfu'
+usedBy:
+  - Regione PIemonte
