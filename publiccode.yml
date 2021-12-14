@@ -90,6 +90,7 @@ developmentStatus: stable
 intendedAudience:
   countries:
     - it
+logo: GFU.png
 it:
   conforme:
     gdpr: true
